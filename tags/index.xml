@@ -10,5 +10,122 @@
        <atom:link href="https://wambu-i.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
    
    
+     <item>
+       <title>Eudyptula I</title>
+       <link>https://wambu-i.github.io/posts/eudyptula-i/</link>
+       <pubDate>Tue, 21 Apr 2020 10:42:05 +0300</pubDate>
+       
+       <guid>https://wambu-i.github.io/posts/eudyptula-i/</guid>
+       <description>&lt;p&gt;After my initial post introducing the Eudyptula Challenge, this is the first post of my solutions to the challenge. As with every programming tutorial or book, the first task is writing a very simple “hello world” kernel module.&lt;/p&gt;
+&lt;p&gt;Here was the description of the first task in the challenge:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Write a Linux kernel module, and stand-alone Makefile, that when loaded prints to the kernel debug log level, “Hello World!”.&lt;br&gt;
+Be sure to make the module be able to be unloaded as well.&lt;/li&gt;
+&lt;li&gt;The Makefile should build the kernel module against the source for the currently running kernel, or, use an environment variable to specify what kernel tree to build it against.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, right off the bat there are a few different concepts from the first task that are unique in kernel programming.
+I will mostly be using the Linux Device Drivers book as a reference and the code for my solutions is available on my GitHub – here is the specific solution for this task.
+Loading and Unloading Kernel Modules.&lt;/p&gt;
+&lt;p&gt;The first part of the challenge description requires a kernel module that can be loaded and unloaded into the kernel. This means that the program (module) written can be added into and removed from the kernel at runtime, or during normal operations.
+Loading a new kernel module is done by the insmod utility while rmmod unloads the module from the kernel.&lt;/p&gt;
+&lt;p&gt;My “hello world” module uses two functions: hello_init to be called when the module is loaded and hello_exit to be called when the module is unloaded. Both functions are declared as static as they don’t really have any use outside of this specific file.
+This is common for initialization functions in kernel modules as the functions are not meant to be used or visible outside their specific files.&lt;/p&gt;
+&lt;p&gt;For the kernel to run the module code, the module must tell the kernel where to find its initialization function. This is done using the module_init macro which is used to mark the location of the module’s initialization function in its object code.
+An initialization function can also be marked using an __init decorator which tells the kernel that this function will only be used during initialization. Functions with the __init token are dropped after the module is loaded.&lt;/p&gt;
+&lt;p&gt;static int __init hello_init(void) {}&lt;/p&gt;
+&lt;p&gt;For unloading a module, a cleanup function is used to return any allocated resources back to the system. The cleanup function does not have a return value so it’s declared as void. The module_exit macro points the kernel to a module’s cleanup function – similar to the module_init macro and the initialization function.
+The __exit modifier can also be used with the module’s cleanup function to indicate that this function will only be used when the module is unloaded.&lt;/p&gt;
+&lt;p&gt;static void __exit hello_exit(void) {}&lt;/p&gt;
+&lt;p&gt;Without a cleanup function, the kernel will not allow the module to be unloaded.
+The macros used in this section are found in the linux/init.h header file.&lt;/p&gt;
+&lt;p&gt;For printing the challenge’s “Hello World!”, the kernel function printk is used. printk is similar to printf in C for printing formatted strings in the kernel. printk also uses various log levels that define the priority of the message. From the challenge, our message should have a priority of KERN_DEBUG, which will make is show up in our dmesg journal.
+The various printk priority levels can be found here.&lt;/p&gt;
+&lt;p&gt;Some other definitions used in kernel code include:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;MODULE_AUTHOR which shows who wrote the code.
+MODULE_DESCRIPTION which is a short description of what the module does.
+MODULE_LICENSE which defines the license that the code uses. Using proprietary licenses with this macro usually “taints” the kernel.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;These macros are found in the linux/module.h header file.
+Compiling the Module.&lt;/p&gt;
+&lt;p&gt;The second part of the challenge requires writing a Makefile that will build the kernel against a kernel source.&lt;/p&gt;
+&lt;p&gt;A Makefile, in this context is a file with a set of rules passed to the GNU make utility that controls code compilation.
+Here is the Makefile for the “hello world” module.&lt;/p&gt;
+&lt;p&gt;When the make command is run, it runs the Makefile. The Makefile first checks if the KERNELRELEASE variable is set or not. If the variable is set, it indicates that the module is being built by the kernel build system, and can use the kernel’s build language.
+In this case, this module will only invoke the following line:&lt;/p&gt;
+&lt;p&gt;obj-m := hello.o&lt;/p&gt;
+&lt;p&gt;The kernel build system handles the rest and a module named hello.ko is produced from compilation.&lt;/p&gt;
+&lt;p&gt;If the KERNELRELEASE variable is not set, then the Makefile is being invoked from the command line and make will need to be shown where the kernel source is located.This is done using the KERNELDIR variable in the Makefile.
+In this case, the following Makefile directive is used to build the kernel.&lt;/p&gt;
+&lt;p&gt;$(MAKE) -C $(KERNELDIR) M=$(PWD) modules&lt;/p&gt;
+&lt;p&gt;This command starts by changing its directory to the one provided with the -C option where it finds the kernel’s top-level makefile. The M= option causes the kernel’s top-level Makefile to move back into your module source directory before trying to build the modules target. The modules target is the list of modules referred by the obj-m variable in the Makefile.&lt;/p&gt;
+&lt;p&gt;After writing both the module and Makefile, my “hello world” module is ready to be compiled:&lt;/p&gt;
+&lt;p&gt;➜ I git:(master) ✗ make
+make -C /home/wambui/kernels/staging/ M=/home/wambui/kernels/eudyptula/I modules
+make[1]: Entering directory &amp;lsquo;/home/wambui/kernels/staging&amp;rsquo;
+CC [M] /home/wambui/kernels/eudyptula/I/hello.o
+MODPOST 1 modules
+CC [M] /home/wambui/kernels/eudyptula/I/hello.mod.o
+LD [M] /home/wambui/kernels/eudyptula/I/hello.ko
+make[1]: Leaving directory &amp;lsquo;/home/wambui/kernels/staging&amp;rsquo;
+➜ I git:(master) ✗ ls
+hello.c hello.c~ hello.ko hello.mod hello.mod.c hello.mod.o hello.o Makefile modules.order Module.symvers
+➜ I git:(master) ✗&lt;/p&gt;
+&lt;p&gt;After successful compilation, the module can then be loaded and unloaded:&lt;/p&gt;
+&lt;p&gt;[wambui I]# ls
+hello.c hello.c~ hello.ko hello.mod hello.mod.c hello.mod.o hello.o Makefile modules.order Module.symvers
+[wambui I]# insmod ./hello.ko
+Hello, World!
+[wambui I]# #rmmod hello
+I&amp;rsquo;m going&amp;hellip;&lt;/p&gt;
+&lt;p&gt;And with that, the first challenge is done!&lt;/p&gt;
+&lt;p&gt;In general, there are three different types of kernel modules:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;A character/char module that provides a device that can be accessed as a stream of bytes. These devices live in the /dev/ folder on the filesystem.
+A block device module that implements a block device that can also be found in the /dev/ folder. Block devices are devices that can hold a filesystem and can perform input/output transfers of whole blocks of data.
+A network device module that implements and controls a hardware or software network interface at the kernel level.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;My “hello world” module does not fall into any of these categories, but it’s a great start on writing kernel modules!
+I’m looking forward to continuing with the challenge where I can build on top of the concepts learnt here.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>The Eudyptula Challenge</title>
+       <link>https://wambu-i.github.io/posts/eudyptula-challenge/</link>
+       <pubDate>Sat, 18 Apr 2020 10:39:42 +0300</pubDate>
+       
+       <guid>https://wambu-i.github.io/posts/eudyptula-challenge/</guid>
+       <description>&lt;p&gt;The Free and Open Source Software movement has existed since the 1980s with Richard Stallman being credited as the “father” of the free and open source movement. Throughout the years, FOSS has gained momentum and popularity in the technology world with many developers and advocates hailing it as the future standard of technology. However, there are also two different positions covered under the umbrella term “FOSS”:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Free software which gives the user the power/ability to run, change and distribute the software as they see fit. It should be noted here that “free” does not refer to the price of the software but rather the rights and liberties the user of the software has. This position is based on trying to protect and guarantee a user’s essential freedoms and liberties.&lt;/li&gt;
+&lt;li&gt;Open source software which is usually governed by different licenses that allow the redistribution and editing of software released to the public. The source code of open source projects is publicly available for inspection, enhancement and modification.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The Linux Kernel is probably the largest and well known free and open source software. It was originally created in 1991 by Linus Torvalds with the source code being both free and open source. The use of the Linux kernel as the operating system of choice in most aspects of computing has (in my opinion) been one of the main drivers of the adoption of the open source development model. The ability to customize and use your operating system however you see fit is one of the main reasons that the Linux kernel and Linux-based distributions are so popular.&lt;/p&gt;
+&lt;p&gt;For a while now, I’ve been looking into ways on how to get started in contributing to the Linux kernel. As a developer, I’d tried to contribute to several different open source projects, but I kept being drawn back to the Linux kernel. I’d spend whole days going through documentation and articles on how to start working on the kernel but I could never make the leap to actual contributions.&lt;br&gt;
+One of the main challenges was that the Linux kernel is huge – with millions of lines of code in the main code base. I had so many ideas of what I was interested in and which parts of the kernel I wanted to contribute to that I could not figure out where to start.&lt;br&gt;
+The kernel also has a unique contribution and development model that is daunting to kernel beginners. There are also literally thousands of developers from around the world actively developing and maintaining it.&lt;br&gt;
+Fun fact, the GitHub repository of the Linux kernel indicates that it has infinity collaborators:
+Linux Kernel Contributors&lt;/p&gt;
+&lt;p&gt;It wasn’t until I took part in the Outreachy programme that I finally got to contribute to the Linux kernel. During this period, I also found out about the Eudyptula Challenge which was described as “a series of programming exercises for the Linux kernel, that started from a very basic ‘Hello world’ kernel module, moving on up in complexity to getting patches accepted into the main Linux kernel source tree.”&lt;/p&gt;
+&lt;p&gt;The Eudyptula Challenge, unfortunately, has not been active 2017, but the exercises used in the challenge can be easily found from people who have attempted it. After reading through the Linux Device Drivers book during my internship, I’m hoping to practice what I learnt by attempting the Eudyptula Challenge. This series will therefore try to document and explain my progress as I make my way through the challenge exercises. So here’s to hoping I’ll do and write about all twenty of the exercises!&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Outreachy: Applying and Getting Accepted into the Programme.</title>
+       <link>https://wambu-i.github.io/posts/outreachy-1/</link>
+       <pubDate>Tue, 31 Dec 2019 10:20:50 +0300</pubDate>
+       
+       <guid>https://wambu-i.github.io/posts/outreachy-1/</guid>
+       <description>&lt;p&gt;I found out about the Outreachy internship project in 2018 during my last year of school. I was interested in getting involved in contributing to the open source community and the Outreachy program kept popping up in guides on how beginners could get started in the open source world. Outreachy is an internship program that matches interns with Free and Open Source Software communities for a three month contribution period.&lt;/p&gt;
+&lt;p&gt;I didn&amp;rsquo;t get to apply for the program in 2018 - partly due to my school workload and partly because I was afraid of not passing through the application period. I had previously applied to and been rejected by Google Summer of Code, so I was sure that I&amp;rsquo;d be getting rejection again.&lt;/p&gt;
+&lt;p&gt;It wasn&amp;rsquo;t until late in 2019 when I revisited the idea of applying to Outreachy again. The December 2019 - March 2020 internship applications were open and at that point, I had been employed full time as a software engineer. Over the past year, I&amp;rsquo;d slowly started getting involved with the open source world by contributing to the Mozilla Foundation, both in code contributions and getting involved in their Internet Health initiatives.&lt;/p&gt;
+&lt;p&gt;Through my job, I&amp;rsquo;d gotten interested in kernel and operating systems development and was very excited that some of the projects in this round were contributing to the Linux Kernel. I&amp;rsquo;m a very poor applicant so I waited until the last day to fill in the first application form (not recommended), and a week later, I got an email that I&amp;rsquo;d passed the first application round!&lt;/p&gt;
+&lt;p&gt;For me, the contribution period was a bit more challenging. The Linux kernel has a separate tutorial for interns wishing to contribute to the project. Interns would need to submit a series of patches on the &lt;!-- raw HTML omitted --&gt;staging&lt;!-- raw HTML omitted --&gt; branch of the kernel to practice on how to get patches in the kernel accepted and merged. Submitting my first patches was very nerve-wracking - I think I went through the tutorial five times before I could send my first (trivial) patch - but &lt;a href=&#34;https://en.wikipedia.org/wiki/Greg_Kroah-Hartman&#34;&gt;Greg Kroah-Hartman&lt;/a&gt; and &lt;a href=&#34;https://pages.lip6.fr/Julia.Lawall&#34;&gt;Julia Lawall&lt;/a&gt; were very helpful in reviewing patches submitted.&lt;/p&gt;
+&lt;p&gt;One of the experiences that helped me during my application was attending the Embedded Linux Conference - Europe at the end of October 2019. I was able to meet and talk to the previous Outreachy interns about their experiences during the application period and their internships. I was also able to meet one of my current mentor - Daniel Vetter - during the conference.&lt;/p&gt;
+&lt;p&gt;I got my acceptance as an intern four weeks after my application round, and I&amp;rsquo;m now officially and intern with the Linux Kernel GPU subsystem! I recently started my internship and I couldn&amp;rsquo;t be happier that I stuck with the application process. I still get excited seeing my name in the commit log - especially in a project as universal and loved as the Linux kernel.&lt;/p&gt;
+&lt;p&gt;One of the things that I reflect on about my application process is the self doubt I experienced. Two weeks into my internship, I&amp;rsquo;m very happy that I didn&amp;rsquo;t talk myself out of applying due to it.&lt;/p&gt;
+</description>
+     </item>
+   
  </channel>
 </rss>

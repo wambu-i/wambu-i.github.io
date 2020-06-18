@@ -3,15 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://wambu-i.github.io/posts/eudyptula-i/</loc>
+    <lastmod>2020-04-21T10:42:05+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://wambu-i.github.io/posts/</loc>
+    <lastmod>2020-04-21T10:42:05+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://wambu-i.github.io/</loc>
+    <lastmod>2020-04-21T10:42:05+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://wambu-i.github.io/posts/eudyptula-challenge/</loc>
+    <lastmod>2020-04-18T10:39:42+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://wambu-i.github.io/posts/outreachy-1/</loc>
+    <lastmod>2019-12-31T10:20:50+03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://wambu-i.github.io/categories/</loc>
   </url>
   
   <url>
     <loc>https://wambu-i.github.io/tags/</loc>
-  </url>
-  
-  <url>
-    <loc>https://wambu-i.github.io/</loc>
   </url>
   
 </urlset>
