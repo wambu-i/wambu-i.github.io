@@ -1,0 +1,207 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Wambui Karuga</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="The HTML5 Herald" />
+<meta name="author" content="Wambui Karuga" /><meta property="og:title" content="Eudyptula I" />
+<meta property="og:description" content="After my initial post introducing the Eudyptula Challenge, this is the first post of my solutions to the challenge. As with every programming tutorial or book, the first task is writing a very simple “hello world” kernel module.
+Here was the description of the first task in the challenge:
+ Write a Linux kernel module, and stand-alone Makefile, that when loaded prints to the kernel debug log level, “Hello World!”." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wambu-i.github.io/posts/eudyptula-i/" />
+<meta property="article:published_time" content="2020-04-21T10:42:05+03:00" />
+<meta property="article:modified_time" content="2020-04-21T10:42:05+03:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Eudyptula I"/>
+<meta name="twitter:description" content="After my initial post introducing the Eudyptula Challenge, this is the first post of my solutions to the challenge. As with every programming tutorial or book, the first task is writing a very simple “hello world” kernel module.
+Here was the description of the first task in the challenge:
+ Write a Linux kernel module, and stand-alone Makefile, that when loaded prints to the kernel debug log level, “Hello World!”."/>
+
+<meta name="generator" content="Hugo 0.72.0" />
+    
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://wambu-i.github.io/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /><link rel='stylesheet' href='https://wambu-i.github.io/css/styles-dark.css'></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Wambui Karuga</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/wambu-i" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://twitter.com/namespacewambui" title="Twitter">
+               <i class="fab fa-twitter fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://linkedin.com/in/wambui-karuga" title="LinkedIn">
+               <i class="fab fa-linkedin fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Eudyptula I</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2020-04-21T10:42:05&#43;03:00">Apr 21, 2020</time>
+        </li>
+        
+
+        
+
+        <li>6 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+<div class="featured_image">
+    <a href="https://wambu-i.github.io/posts/eudyptula-i/" title="Eudyptula I">
+        <img src="">
+    </a>
+</div>
+
+
+
+    <p>After my initial post introducing the Eudyptula Challenge, this is the first post of my solutions to the challenge. As with every programming tutorial or book, the first task is writing a very simple “hello world” kernel module.</p>
+<p>Here was the description of the first task in the challenge:</p>
+<ul>
+<li>Write a Linux kernel module, and stand-alone Makefile, that when loaded prints to the kernel debug log level, “Hello World!”.<br>
+Be sure to make the module be able to be unloaded as well.</li>
+<li>The Makefile should build the kernel module against the source for the currently running kernel, or, use an environment variable to specify what kernel tree to build it against.</li>
+</ul>
+<p>So, right off the bat there are a few different concepts from the first task that are unique in kernel programming.
+I will mostly be using the Linux Device Drivers book as a reference and the code for my solutions is available on my GitHub – here is the specific solution for this task.
+Loading and Unloading Kernel Modules.</p>
+<p>The first part of the challenge description requires a kernel module that can be loaded and unloaded into the kernel. This means that the program (module) written can be added into and removed from the kernel at runtime, or during normal operations.
+Loading a new kernel module is done by the insmod utility while rmmod unloads the module from the kernel.</p>
+<p>My “hello world” module uses two functions: hello_init to be called when the module is loaded and hello_exit to be called when the module is unloaded. Both functions are declared as static as they don’t really have any use outside of this specific file.
+This is common for initialization functions in kernel modules as the functions are not meant to be used or visible outside their specific files.</p>
+<p>For the kernel to run the module code, the module must tell the kernel where to find its initialization function. This is done using the module_init macro which is used to mark the location of the module’s initialization function in its object code.
+An initialization function can also be marked using an __init decorator which tells the kernel that this function will only be used during initialization. Functions with the __init token are dropped after the module is loaded.</p>
+<p>static int __init hello_init(void) {}</p>
+<p>For unloading a module, a cleanup function is used to return any allocated resources back to the system. The cleanup function does not have a return value so it’s declared as void. The module_exit macro points the kernel to a module’s cleanup function – similar to the module_init macro and the initialization function.
+The __exit modifier can also be used with the module’s cleanup function to indicate that this function will only be used when the module is unloaded.</p>
+<p>static void __exit hello_exit(void) {}</p>
+<p>Without a cleanup function, the kernel will not allow the module to be unloaded.
+The macros used in this section are found in the linux/init.h header file.</p>
+<p>For printing the challenge’s “Hello World!”, the kernel function printk is used. printk is similar to printf in C for printing formatted strings in the kernel. printk also uses various log levels that define the priority of the message. From the challenge, our message should have a priority of KERN_DEBUG, which will make is show up in our dmesg journal.
+The various printk priority levels can be found here.</p>
+<p>Some other definitions used in kernel code include:</p>
+<pre><code>MODULE_AUTHOR which shows who wrote the code.
+MODULE_DESCRIPTION which is a short description of what the module does.
+MODULE_LICENSE which defines the license that the code uses. Using proprietary licenses with this macro usually “taints” the kernel.
+</code></pre>
+<p>These macros are found in the linux/module.h header file.
+Compiling the Module.</p>
+<p>The second part of the challenge requires writing a Makefile that will build the kernel against a kernel source.</p>
+<p>A Makefile, in this context is a file with a set of rules passed to the GNU make utility that controls code compilation.
+Here is the Makefile for the “hello world” module.</p>
+<p>When the make command is run, it runs the Makefile. The Makefile first checks if the KERNELRELEASE variable is set or not. If the variable is set, it indicates that the module is being built by the kernel build system, and can use the kernel’s build language.
+In this case, this module will only invoke the following line:</p>
+<p>obj-m := hello.o</p>
+<p>The kernel build system handles the rest and a module named hello.ko is produced from compilation.</p>
+<p>If the KERNELRELEASE variable is not set, then the Makefile is being invoked from the command line and make will need to be shown where the kernel source is located.This is done using the KERNELDIR variable in the Makefile.
+In this case, the following Makefile directive is used to build the kernel.</p>
+<p>$(MAKE) -C $(KERNELDIR) M=$(PWD) modules</p>
+<p>This command starts by changing its directory to the one provided with the -C option where it finds the kernel’s top-level makefile. The M= option causes the kernel’s top-level Makefile to move back into your module source directory before trying to build the modules target. The modules target is the list of modules referred by the obj-m variable in the Makefile.</p>
+<p>After writing both the module and Makefile, my “hello world” module is ready to be compiled:</p>
+<p>➜ I git:(master) ✗ make
+make -C /home/wambui/kernels/staging/ M=/home/wambui/kernels/eudyptula/I modules
+make[1]: Entering directory &lsquo;/home/wambui/kernels/staging&rsquo;
+CC [M] /home/wambui/kernels/eudyptula/I/hello.o
+MODPOST 1 modules
+CC [M] /home/wambui/kernels/eudyptula/I/hello.mod.o
+LD [M] /home/wambui/kernels/eudyptula/I/hello.ko
+make[1]: Leaving directory &lsquo;/home/wambui/kernels/staging&rsquo;
+➜ I git:(master) ✗ ls
+hello.c hello.c~ hello.ko hello.mod hello.mod.c hello.mod.o hello.o Makefile modules.order Module.symvers
+➜ I git:(master) ✗</p>
+<p>After successful compilation, the module can then be loaded and unloaded:</p>
+<p>[wambui I]# ls
+hello.c hello.c~ hello.ko hello.mod hello.mod.c hello.mod.o hello.o Makefile modules.order Module.symvers
+[wambui I]# insmod ./hello.ko
+Hello, World!
+[wambui I]# #rmmod hello
+I&rsquo;m going&hellip;</p>
+<p>And with that, the first challenge is done!</p>
+<p>In general, there are three different types of kernel modules:</p>
+<pre><code>A character/char module that provides a device that can be accessed as a stream of bytes. These devices live in the /dev/ folder on the filesystem.
+A block device module that implements a block device that can also be found in the /dev/ folder. Block devices are devices that can hold a filesystem and can perform input/output transfers of whole blocks of data.
+A network device module that implements and controls a hardware or software network interface at the kernel level.
+</code></pre>
+<p>My “hello world” module does not fall into any of these categories, but it’s a great start on writing kernel modules!
+I’m looking forward to continuing with the challenge where I can build on top of the concepts learnt here.</p>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://wambu-i.github.io/posts/eudyptula-challenge/"><i class="fa fa-chevron-circle-left"></i> The Eudyptula Challenge</a>
+        </li>
+        
+        
+    </ul>
+</section>
+  
+    
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h6> |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://wambu-i.github.io/index.xml">Subscribe </a></h6>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>
+
