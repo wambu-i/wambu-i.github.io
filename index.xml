@@ -20,7 +20,7 @@
        <description>&lt;p&gt;After my initial post introducing the Eudyptula Challenge, this is the first post of my solutions to the challenge. As with every programming tutorial or book, the first task is writing a very simple “hello world” kernel module.&lt;/p&gt;
 &lt;p&gt;Here was the description of the first task in the challenge:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Write a Linux kernel module, and stand-alone Makefile, that when loaded prints to the kernel debug log level, “Hello World!”.&lt;br&gt;
+&lt;li&gt;Write a Linux kernel module, and stand-alone Makefile, that when loaded prints to the kernel debug log level, “Hello World!”.
 Be sure to make the module be able to be unloaded as well.&lt;/li&gt;
 &lt;li&gt;The Makefile should build the kernel module against the source for the currently running kernel, or, use an environment variable to specify what kernel tree to build it against.&lt;/li&gt;
 &lt;/ul&gt;
