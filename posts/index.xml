@@ -25,65 +25,73 @@ Be sure to make the module be able to be unloaded as well.&lt;/li&gt;
 &lt;li&gt;The Makefile should build the kernel module against the source for the currently running kernel, or, use an environment variable to specify what kernel tree to build it against.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;So, right off the bat there are a few different concepts from the first task that are unique in kernel programming.
-I will mostly be using the Linux Device Drivers book as a reference and the code for my solutions is available on my GitHub – here is the specific solution for this task.
-Loading and Unloading Kernel Modules.&lt;/p&gt;
+I will mostly be using the Linux Device Drivers book as a reference and the code for my solutions is available on my GitHub – here is the specific solution for this task.&lt;/p&gt;
+&lt;h4 id=&#34;loading-and-unloading-kernel-modules&#34;&gt;Loading and Unloading Kernel Modules.&lt;/h4&gt;
 &lt;p&gt;The first part of the challenge description requires a kernel module that can be loaded and unloaded into the kernel. This means that the program (module) written can be added into and removed from the kernel at runtime, or during normal operations.
 Loading a new kernel module is done by the insmod utility while rmmod unloads the module from the kernel.&lt;/p&gt;
-&lt;p&gt;My “hello world” module uses two functions: hello_init to be called when the module is loaded and hello_exit to be called when the module is unloaded. Both functions are declared as static as they don’t really have any use outside of this specific file.
+&lt;p&gt;My “hello world” module uses two functions: &lt;code&gt;hello_init&lt;/code&gt; to be called when the module is loaded and &lt;code&gt;hello_exit&lt;/code&gt; to be called when the module is unloaded. Both functions are declared as static as they don’t really have any use outside of this specific file.
 This is common for initialization functions in kernel modules as the functions are not meant to be used or visible outside their specific files.&lt;/p&gt;
-&lt;p&gt;For the kernel to run the module code, the module must tell the kernel where to find its initialization function. This is done using the module_init macro which is used to mark the location of the module’s initialization function in its object code.
-An initialization function can also be marked using an __init decorator which tells the kernel that this function will only be used during initialization. Functions with the __init token are dropped after the module is loaded.&lt;/p&gt;
-&lt;p&gt;static int __init hello_init(void) {}&lt;/p&gt;
-&lt;p&gt;For unloading a module, a cleanup function is used to return any allocated resources back to the system. The cleanup function does not have a return value so it’s declared as void. The module_exit macro points the kernel to a module’s cleanup function – similar to the module_init macro and the initialization function.
-The __exit modifier can also be used with the module’s cleanup function to indicate that this function will only be used when the module is unloaded.&lt;/p&gt;
-&lt;p&gt;static void __exit hello_exit(void) {}&lt;/p&gt;
-&lt;p&gt;Without a cleanup function, the kernel will not allow the module to be unloaded.
-The macros used in this section are found in the linux/init.h header file.&lt;/p&gt;
-&lt;p&gt;For printing the challenge’s “Hello World!”, the kernel function printk is used. printk is similar to printf in C for printing formatted strings in the kernel. printk also uses various log levels that define the priority of the message. From the challenge, our message should have a priority of KERN_DEBUG, which will make is show up in our dmesg journal.
-The various printk priority levels can be found here.&lt;/p&gt;
-&lt;p&gt;Some other definitions used in kernel code include:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;MODULE_AUTHOR which shows who wrote the code.
-MODULE_DESCRIPTION which is a short description of what the module does.
-MODULE_LICENSE which defines the license that the code uses. Using proprietary licenses with this macro usually “taints” the kernel.
+&lt;p&gt;For the kernel to run the module code, the module must tell the kernel where to find its initialization function. This is done using the &lt;code&gt;module_init&lt;/code&gt; macro which is used to mark the location of the module’s initialization function in its object code.
+An initialization function can also be marked using an &lt;code&gt;__init&lt;/code&gt; decorator which tells the kernel that this function will only be used during initialization. Functions with the &lt;code&gt;__init&lt;/code&gt; token are dropped after the module is loaded.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;static int __init hello_init(void) {}
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;These macros are found in the linux/module.h header file.
-Compiling the Module.&lt;/p&gt;
+&lt;p&gt;For unloading a module, a cleanup function is used to return any allocated resources back to the system. The cleanup function does not have a return value so it’s declared as void. The &lt;code&gt;module_exit&lt;/code&gt; macro points the kernel to a module’s cleanup function – similar to the &lt;code&gt;module_init&lt;/code&gt; macro and the initialization function.
+The &lt;code&gt;__exit&lt;/code&gt; modifier can also be used with the module’s cleanup function to indicate that this function will only be used when the module is unloaded.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;static void __exit hello_exit(void) {}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Without a cleanup function, the kernel will not allow the module to be unloaded.
+The macros used in this section are found in the &lt;code&gt;linux/init.h&lt;/code&gt; header file.&lt;/p&gt;
+&lt;p&gt;For printing the challenge’s “Hello World!”, the kernel function printk is used. &lt;code&gt;printk&lt;/code&gt; is similar to printf in C for printing formatted strings in the kernel. printk also uses various log levels that define the priority of the message. From the challenge, our message should have a priority of &lt;code&gt;KERN_DEBUG&lt;/code&gt;, which will make is show up in our dmesg journal.
+The various printk priority levels can be found &lt;a href=&#34;https://elinux.org/Debugging_by_printing#Log_Levels&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Some other definitions used in kernel code include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;MODULE_AUTHOR&lt;/code&gt; which shows who wrote the code.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;MODULE_DESCRIPTION&lt;/code&gt; which is a short description of what the module does.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;MODULE_LICENSE&lt;/code&gt; which defines the license that the code uses. Using proprietary licenses with this macro usually “taints” the kernel.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These macros are found in the &lt;code&gt;linux/module.h&lt;/code&gt; header file.&lt;/p&gt;
+&lt;h4 id=&#34;compiling-the-module&#34;&gt;Compiling the Module.&lt;/h4&gt;
 &lt;p&gt;The second part of the challenge requires writing a Makefile that will build the kernel against a kernel source.&lt;/p&gt;
-&lt;p&gt;A Makefile, in this context is a file with a set of rules passed to the GNU make utility that controls code compilation.
-Here is the Makefile for the “hello world” module.&lt;/p&gt;
-&lt;p&gt;When the make command is run, it runs the Makefile. The Makefile first checks if the KERNELRELEASE variable is set or not. If the variable is set, it indicates that the module is being built by the kernel build system, and can use the kernel’s build language.
+&lt;p&gt;A &lt;code&gt;Makefile&lt;/code&gt;, in this context is a file with a set of rules passed to the GNU make utility that controls code compilation.
+&lt;a href=&#34;https://github.com/wambu-i/eudyptula/blob/master/I/Makefile&#34;&gt;Here&lt;/a&gt; is the Makefile for the “hello world” module.&lt;/p&gt;
+&lt;p&gt;When the make command is run, it runs the Makefile. The Makefile first checks if the &lt;code&gt;KERNELRELEASE&lt;/code&gt; variable is set or not. If the variable is set, it indicates that the module is being built by the kernel build system, and can use the kernel’s build language.
 In this case, this module will only invoke the following line:&lt;/p&gt;
-&lt;p&gt;obj-m := hello.o&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;obj-m := hello.o
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The kernel build system handles the rest and a module named hello.ko is produced from compilation.&lt;/p&gt;
 &lt;p&gt;If the KERNELRELEASE variable is not set, then the Makefile is being invoked from the command line and make will need to be shown where the kernel source is located.This is done using the KERNELDIR variable in the Makefile.
 In this case, the following Makefile directive is used to build the kernel.&lt;/p&gt;
-&lt;p&gt;$(MAKE) -C $(KERNELDIR) M=$(PWD) modules&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;This command starts by changing its directory to the one provided with the -C option where it finds the kernel’s top-level makefile. The M= option causes the kernel’s top-level Makefile to move back into your module source directory before trying to build the modules target. The modules target is the list of modules referred by the obj-m variable in the Makefile.&lt;/p&gt;
 &lt;p&gt;After writing both the module and Makefile, my “hello world” module is ready to be compiled:&lt;/p&gt;
-&lt;p&gt;➜ I git:(master) ✗ make
+&lt;pre&gt;&lt;code&gt;➜ I git:(master) ✗ make
 make -C /home/wambui/kernels/staging/ M=/home/wambui/kernels/eudyptula/I modules
-make[1]: Entering directory &amp;lsquo;/home/wambui/kernels/staging&amp;rsquo;
+make[1]: Entering directory &#39;/home/wambui/kernels/staging&#39;
 CC [M] /home/wambui/kernels/eudyptula/I/hello.o
 MODPOST 1 modules
 CC [M] /home/wambui/kernels/eudyptula/I/hello.mod.o
 LD [M] /home/wambui/kernels/eudyptula/I/hello.ko
-make[1]: Leaving directory &amp;lsquo;/home/wambui/kernels/staging&amp;rsquo;
+make[1]: Leaving directory &#39;/home/wambui/kernels/staging&#39;
 ➜ I git:(master) ✗ ls
 hello.c hello.c~ hello.ko hello.mod hello.mod.c hello.mod.o hello.o Makefile modules.order Module.symvers
-➜ I git:(master) ✗&lt;/p&gt;
+➜ I git:(master) ✗
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;After successful compilation, the module can then be loaded and unloaded:&lt;/p&gt;
-&lt;p&gt;[wambui I]# ls
+&lt;pre&gt;&lt;code&gt;[wambui I]# ls
 hello.c hello.c~ hello.ko hello.mod hello.mod.c hello.mod.o hello.o Makefile modules.order Module.symvers
 [wambui I]# insmod ./hello.ko
 Hello, World!
 [wambui I]# #rmmod hello
-I&amp;rsquo;m going&amp;hellip;&lt;/p&gt;
+I&#39;m going...
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;And with that, the first challenge is done!&lt;/p&gt;
 &lt;p&gt;In general, there are three different types of kernel modules:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;A character/char module that provides a device that can be accessed as a stream of bytes. These devices live in the /dev/ folder on the filesystem.
-A block device module that implements a block device that can also be found in the /dev/ folder. Block devices are devices that can hold a filesystem and can perform input/output transfers of whole blocks of data.
-A network device module that implements and controls a hardware or software network interface at the kernel level.
-&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;A character/char module that provides a device that can be accessed as a stream of bytes. These devices live in the /dev/ folder on the filesystem.&lt;/li&gt;
+&lt;li&gt;A block device module that implements a block device that can also be found in the /dev/ folder. Block devices are devices that can hold a filesystem and can perform input/output transfers of whole blocks of data.&lt;/li&gt;
+&lt;li&gt;A network device module that implements and controls a hardware or software network interface at the kernel level.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;My “hello world” module does not fall into any of these categories, but it’s a great start on writing kernel modules!
 I’m looking forward to continuing with the challenge where I can build on top of the concepts learnt here.&lt;/p&gt;
 </description>
