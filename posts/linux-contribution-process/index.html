@@ -1,0 +1,168 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Wambui Karuga</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="I write stuff about programming sometimes." />
+<meta name="author" content="Wambui Karuga" /><meta property="og:title" content="Linux Contribution Process" />
+<meta property="og:description" content="Different contributing process  GitHub/Gitlab Bugzilla Phabricator   Expansion of the Kernel development process How to format patches, How to send patches/email etiquette Incorporating feedback  Open source projects usually employ unique collaborative processes and methods to work on a shared codebase or project for team members or individual contributors to ensure cohesive project advancement. Two of the key aspects of open source communities are a version control system, for example Git or Mercurial, and a hosting/tracking service, such as GitHub where development and issues can be tracked." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://karuga.xyz/posts/linux-contribution-process/" />
+<meta property="article:published_time" content="2020-07-17T20:23:12+03:00" />
+<meta property="article:modified_time" content="2020-07-17T20:23:12+03:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux Contribution Process"/>
+<meta name="twitter:description" content="Different contributing process  GitHub/Gitlab Bugzilla Phabricator   Expansion of the Kernel development process How to format patches, How to send patches/email etiquette Incorporating feedback  Open source projects usually employ unique collaborative processes and methods to work on a shared codebase or project for team members or individual contributors to ensure cohesive project advancement. Two of the key aspects of open source communities are a version control system, for example Git or Mercurial, and a hosting/tracking service, such as GitHub where development and issues can be tracked."/>
+
+<meta name="generator" content="Hugo 0.72.0" />
+    
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://karuga.xyz/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /><link rel='stylesheet' href='https://karuga.xyz/css/styles-dark.css'></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Wambui Karuga</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/wambu-i" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://twitter.com/namespacewambui" title="Twitter">
+               <i class="fab fa-twitter fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://linkedin.com/in/wambui-karuga" title="LinkedIn">
+               <i class="fab fa-linkedin fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Linux Contribution Process</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2020-07-17T20:23:12&#43;03:00">Jul 17, 2020</time>
+        </li>
+        
+
+        
+
+        <li>4 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+<div class="featured_image">
+    <a href="https://karuga.xyz/posts/linux-contribution-process/" title="Linux Contribution Process">
+        <img src="">
+    </a>
+</div>
+
+
+
+    <ul>
+<li>Different contributing process
+<ul>
+<li>GitHub/Gitlab</li>
+<li>Bugzilla</li>
+<li>Phabricator</li>
+</ul>
+</li>
+<li>Expansion of the Kernel development process</li>
+<li>How to format patches,</li>
+<li>How to send patches/email etiquette</li>
+<li>Incorporating feedback</li>
+</ul>
+<p>Open source projects usually employ unique collaborative processes and methods to work on a shared codebase or project for team members or individual contributors to ensure cohesive project advancement. Two of the key aspects of open source communities are a version control system, for example Git or Mercurial, and a hosting/tracking service, such as GitHub where development and issues can be tracked.
+After my introduction to the open source world, this article will try to give an overview of how open source communities work, with partiular examples using the Linux kernel.</p>
+<h5 id="management-of-open-source-communities">Management of Open Source Communities</h5>
+<p>Each open source project usually creates its own structure, with some common aspects:</p>
+<ul>
+<li>
+<p>People
+Each open source community will have a few key people to drive forward the development of the project in the right direction. The leader of the project is usually the original author of the software or some designated by them and usually has the final say over decision-making in the project. For example, in the Linux kernel, Linus Torvalds, the original author, is still actively involved in development and controls every release of the kernel.
+In large communities, the project might by divided into specific parts that are overseen by experienced developers known as maintainers. The maintainers usually oversee development of their components of the project and will usually be the final stop before code reaches the leaders.
+Other than the maintainers, there are also regular and irregular contributors to the projects. Regular and reliable contributors can be given special priviledges in the project and are usually referred to as &ldquo;committers&rdquo; or &ldquo;someone with commit rights&rdquo;. These are generally developers who&rsquo;ve regularly contributed high quality work to these projects and can be trusted with the ability to merge their own code. On the other hand, irregular contributors generally contribute infrequently to their preferred projects and do not have any special priviledges.
+The Linux kernel, for example, is divided into specific subsystems that handle different aspects of the kernel. Each subsystem has a maintainer who will submit work in their subsystem to Linus for final review and inclusion in kernel releases. In particularly large subsystems, the subsystem is usually divided into smaller components or communities which will in turn have their specific maintainers. Individual contributors will send their work to be reviewed by these maintainers who will propagate accepted changes up the maintainer ladder until the changes get to Linus.</p>
+</li>
+<li>
+<p>Hosting/Tracking Infrastructure
+Each open source community will have a mechanism for tracking ongoing work, issues and documentation for their projects. Over the past couple of years, GitHub has become the leading hosting service for open source projects. GitHub and GitLab both leverage the Git version control system to manage development of shared projects. On GitHub and GitLab, communities have access to pull requests, reviews and issue trackers that are used to keep the development process sane.
+An example of a GitHub focuses open source project is React. All work on React happens on GitHub, with any one being able to create an <a href="https://github.com/facebook/react/issues">issue</a> on the public issue tracker. Pull requests are usually submitted to address opened issues which can undergo review by the core React team and the general public. Accepted pull requests are usually merged into the <code>master</code> branch and closed.
+Other communities are able to leverage bug trackers such as Bugzilla for their development. Various Mozilla projects use their public <a href="https://bugzilla.mozilla.org/home">Bugzilla</a> instance to track issues and ongoing work. Bugzilla can also be used for code review for submitted work.
+The Wikimedia Foundation uses <a href="https://phabricator.wikimedia.org/">Phabricator</a> for the same purpose.
+Many projects will have a contributing guideline on how to get started on their specific development process.</p>
+</li>
+</ul>
+<h5 id="how-linux-works">How Linux Works.</h5>
+<p>Despite having an active GitHub repository, the Linux kernel&rsquo;s development process does not happen on GitHub. The Linux kernel is unique from most communities in that most of its development happens on mailing lists. Each subsystem will usually have its</p>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://karuga.xyz/posts/eudyptula-i/"><i class="fa fa-chevron-circle-left"></i> The Eudyptula Challenge: Task I</a>
+        </li>
+        
+        
+    </ul>
+</section>
+  
+    
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h4>Wambui Karuga</h4>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>
+

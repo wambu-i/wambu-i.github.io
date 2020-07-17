@@ -1,13 +1,14 @@
 
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
  <channel>
-   <title>Tags on Wambui Karuga</title>
-   <link>https://karuga.xyz/tags/</link>
-   <description>Recent content in Tags on Wambui Karuga</description>
+   <title>Outreachy on Wambui Karuga</title>
+   <link>https://karuga.xyz/categories/outreachy/</link>
+   <description>Recent content in Outreachy on Wambui Karuga</description>
    <generator>Hugo -- gohugo.io</generator>
    <language>en-us</language>
+   <lastBuildDate>Tue, 31 Dec 2019 10:20:50 +0300</lastBuildDate>
    
-       <atom:link href="https://karuga.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
+       <atom:link href="https://karuga.xyz/categories/outreachy/index.xml" rel="self" type="application/rss+xml" />
    
    
      <item>
