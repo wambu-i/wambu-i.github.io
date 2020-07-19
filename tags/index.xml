@@ -11,32 +11,20 @@
    
    
      <item>
-       <title>An Overview of the Typical Kernel Contributing Process</title>
-       <link>https://karuga.xyz/posts/linux-contribution-process/</link>
-       <pubDate>Fri, 17 Jul 2020 20:23:12 +0300</pubDate>
+       <title>An Overview of Open Source Communities</title>
+       <link>https://karuga.xyz/posts/opensource-overview/</link>
+       <pubDate>Sun, 19 Jul 2020 20:47:44 +0300</pubDate>
        
-       <guid>https://karuga.xyz/posts/linux-contribution-process/</guid>
-       <description>&lt;ul&gt;
-&lt;li&gt;Different contributing process
-&lt;ul&gt;
-&lt;li&gt;GitHub/Gitlab&lt;/li&gt;
-&lt;li&gt;Bugzilla&lt;/li&gt;
-&lt;li&gt;Phabricator&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Expansion of the Kernel development process&lt;/li&gt;
-&lt;li&gt;How to format patches,&lt;/li&gt;
-&lt;li&gt;How to send patches/email etiquette&lt;/li&gt;
-&lt;li&gt;Incorporating feedback&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Open source projects usually employ unique collaborative processes and methods to work on a shared codebase or project for team members or individual contributors to ensure cohesive project advancement. Two of the key aspects of open source communities are a version control system, for example Git or Mercurial, and a hosting/tracking service, such as GitHub where development and issues can be tracked.
+       <guid>https://karuga.xyz/posts/opensource-overview/</guid>
+       <description>&lt;p&gt;Open source projects usually employ unique collaborative processes and methods to work on a shared codebase or project for team members or individual contributors to ensure cohesive project advancement. Two of the key aspects of open source communities are a version control system, for example Git or Mercurial, and a hosting/tracking service, such as GitHub where development and issues can be tracked.
 After my introduction to the open source world, this article will try to give an overview of how open source communities work, with partiular examples using the Linux kernel.&lt;/p&gt;
 &lt;h2 id=&#34;management-of-open-source-communities&#34;&gt;Management of Open Source Communities&lt;/h2&gt;
 &lt;p&gt;Each open source project usually creates its own structure, with some common aspects:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;People&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Each open source community will have a few key people to drive forward the development of the project in the right direction. The leader of the project is usually the original author of the software or some designated by them and usually has the final say over decision-making in the project. For example, in the Linux kernel, Linus Torvalds, the original author, is still actively involved in development and controls every release of the kernel.&lt;/p&gt;
+&lt;p&gt;Each open source community will have a few key people to drive forward the development of the project in the right direction. The leader of the project is usually the original author of the software or some designated by them and usually has the final say over decision-making in the project. For example, in the Linux kernel, Linus Torvalds, the original author, is still actively involved in development and controls every release of the kernel.&lt;br&gt;
+Sometimes, project leaders will usually handover administration of the project to a technical steering committee or foundation that acts as the governing body of the project. &lt;a href=&#34;https://nodejs.org/en/&#34;&gt;Node.js&lt;/a&gt; is an example of such a project - with it being formerly managed by the Node.js Foundation, which has evolved to the current OpenJS Foundation.&lt;/p&gt;
 &lt;p&gt;In large communities, the project might by divided into specific parts that are overseen by experienced developers known as maintainers. The maintainers usually oversee development of their components of the project and will usually be the final stop before code reaches the leaders.&lt;br&gt;
 Other than the maintainers, there are also regular and irregular contributors to the projects. Regular and reliable contributors can be given special priviledges in the project and are usually referred to as &amp;ldquo;committers&amp;rdquo; or &amp;ldquo;someone with commit rights&amp;rdquo;. These are generally developers who&amp;rsquo;ve regularly contributed high quality work to these projects and can be trusted with the ability to merge their own code. On the other hand, irregular contributors generally contribute infrequently to their preferred projects and do not have any special priviledges.&lt;/p&gt;
 &lt;p&gt;The Linux kernel, for example, is divided into specific subsystems that handle different aspects of the kernel. Each subsystem has a maintainer who will submit work in their subsystem to Linus for final review and inclusion in kernel releases. In particularly large subsystems, the subsystem is usually divided into smaller components or communities which will in turn have their specific maintainers. Individual contributors will send their work to be reviewed by these maintainers who will propagate accepted changes up the maintainer ladder until the changes get to Linus.&lt;/p&gt;
@@ -44,14 +32,24 @@ Other than the maintainers, there are also regular and irregular contributors to
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Hosting/Tracking Infrastructure&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Each open source community will have a mechanism for tracking ongoing work, issues and documentation for their projects. Over the past couple of years, GitHub has become the leading hosting service for open source projects. GitHub and GitLab both leverage the Git version control system to manage development of shared projects. On GitHub and GitLab, communities have access to pull requests, reviews and issue trackers that are used to keep the development process sane.&lt;/p&gt;
-&lt;p&gt;An example of a GitHub focuses open source project is React. All work on React happens on GitHub, with any one being able to create an &lt;a href=&#34;https://github.com/facebook/react/issues&#34;&gt;issue&lt;/a&gt; on the public issue tracker. Pull requests are usually submitted to address opened issues which can undergo review by the core React team and the general public. Accepted pull requests are usually merged into the &lt;code&gt;master&lt;/code&gt; branch and closed.&lt;/p&gt;
+&lt;p&gt;An example of a GitHub focused open source project is React. All work on React happens on GitHub, with any one being able to create an &lt;a href=&#34;https://github.com/facebook/react/issues&#34;&gt;issue&lt;/a&gt; on the public issue tracker. Pull requests are usually submitted to address opened issues which can undergo review by the core React team and the general public. Accepted pull requests are usually merged into the &lt;code&gt;master&lt;/code&gt; branch and closed.&lt;/p&gt;
 &lt;p&gt;Other communities are able to leverage bug trackers such as Bugzilla for their development. Various Mozilla projects use their public &lt;a href=&#34;https://bugzilla.mozilla.org/home&#34;&gt;Bugzilla&lt;/a&gt; instance to track issues and ongoing work. Bugzilla can also be used for code review for submitted work.&lt;br&gt;
-The Wikimedia Foundation uses &lt;a href=&#34;https://phabricator.wikimedia.org/&#34;&gt;Phabricator&lt;/a&gt; for the same purpose.&lt;/p&gt;
-&lt;p&gt;Many projects will also have a contributing guideline on how to get started on their specific development process.&lt;/p&gt;
+The Wikimedia Foundation uses &lt;a href=&#34;https://phabricator.wikimedia.org/&#34;&gt;Phabricator&lt;/a&gt; for the same purpose.
+o
+Despite having an active GitHub repository, the Linux kernel&amp;rsquo;s development process does not happen on GitHub. The Linux kernel is unique from most communities in that most of its development happens on mailing lists. Each subsystem will usually have its own mailing list where patches are sent to and reviewed for inclusion into the kernel. Active kernel mailing lists can be found &lt;a href=&#34;http://vger.kernel.org/vger-lists.html&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Version Control&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For remote collaboration, a good version control system is paramount.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Code of Conduct&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;As the number of people contributing to open source projects grow,&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Licenses&lt;/strong&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;how-linux-works&#34;&gt;How Linux Works.&lt;/h2&gt;
-&lt;p&gt;Despite having an active GitHub repository, the Linux kernel&amp;rsquo;s development process does not happen on GitHub. The Linux kernel is unique from most communities in that most of its development happens on mailing lists. Each subsystem will usually have its&lt;/p&gt;
 </description>
      </item>
    
