@@ -16,8 +16,7 @@
        <pubDate>Sun, 19 Jul 2020 20:47:44 +0300</pubDate>
        
        <guid>https://karuga.xyz/posts/opensource-overview/</guid>
-       <description>&lt;p&gt;Open source projects usually employ unique collaborative processes and methods to work on a shared codebase or project for team members or individual contributors to ensure cohesive project advancement. Two of the key aspects of open source communities are a version control system, for example Git or Mercurial, and a hosting/tracking service, such as GitHub where development and issues can be tracked.
-After my introduction to the open source world, this article will try to give an overview of how open source communities work, with partiular examples using the Linux kernel.&lt;/p&gt;
+       <description>&lt;p&gt;Open source projects usually employ unique collaborative processes and methods to work on a shared codebase or project for team members or individual contributors to ensure cohesive project advancement. To achieve this, the open source community has identified key aspects of managing such communities that ensure proper collaboration.&lt;/p&gt;
 &lt;h2 id=&#34;management-of-open-source-communities&#34;&gt;Management of Open Source Communities&lt;/h2&gt;
 &lt;p&gt;Each open source project usually creates its own structure, with some common aspects:&lt;/p&gt;
 &lt;ul&gt;
@@ -34,22 +33,29 @@ Other than the maintainers, there are also regular and irregular contributors to
 &lt;p&gt;Each open source community will have a mechanism for tracking ongoing work, issues and documentation for their projects. Over the past couple of years, GitHub has become the leading hosting service for open source projects. GitHub and GitLab both leverage the Git version control system to manage development of shared projects. On GitHub and GitLab, communities have access to pull requests, reviews and issue trackers that are used to keep the development process sane.&lt;/p&gt;
 &lt;p&gt;An example of a GitHub focused open source project is React. All work on React happens on GitHub, with any one being able to create an &lt;a href=&#34;https://github.com/facebook/react/issues&#34;&gt;issue&lt;/a&gt; on the public issue tracker. Pull requests are usually submitted to address opened issues which can undergo review by the core React team and the general public. Accepted pull requests are usually merged into the &lt;code&gt;master&lt;/code&gt; branch and closed.&lt;/p&gt;
 &lt;p&gt;Other communities are able to leverage bug trackers such as Bugzilla for their development. Various Mozilla projects use their public &lt;a href=&#34;https://bugzilla.mozilla.org/home&#34;&gt;Bugzilla&lt;/a&gt; instance to track issues and ongoing work. Bugzilla can also be used for code review for submitted work.&lt;br&gt;
-The Wikimedia Foundation uses &lt;a href=&#34;https://phabricator.wikimedia.org/&#34;&gt;Phabricator&lt;/a&gt; for the same purpose.
-o
-Despite having an active GitHub repository, the Linux kernel&amp;rsquo;s development process does not happen on GitHub. The Linux kernel is unique from most communities in that most of its development happens on mailing lists. Each subsystem will usually have its own mailing list where patches are sent to and reviewed for inclusion into the kernel. Active kernel mailing lists can be found &lt;a href=&#34;http://vger.kernel.org/vger-lists.html&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+The Wikimedia Foundation uses &lt;a href=&#34;https://phabricator.wikimedia.org/&#34;&gt;Phabricator&lt;/a&gt; for the same purpose.&lt;/p&gt;
+&lt;p&gt;Despite having an active GitHub repository, the Linux kernel&amp;rsquo;s development process does not happen on GitHub. The Linux kernel is unique from most communities in that most of its development happens on mailing lists. Each subsystem will usually have its own mailing list where patches are sent to and reviewed for inclusion into the kernel. Active kernel mailing lists can be found &lt;a href=&#34;http://vger.kernel.org/vger-lists.html&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Version Control&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;For remote collaboration, a good version control system is paramount.&lt;/p&gt;
+&lt;p&gt;For remote collaboration, a good version control system is paramount.&lt;br&gt;
+Git has become the defacto open source version control software in use, but &lt;a href=&#34;https://www.mercurial-scm.org/&#34;&gt;Mercurial&lt;/a&gt; and &lt;a href=&#34;https://subversion.apache.org/&#34;&gt;Subversion&lt;/a&gt; offer similar functionality. The central Mozilla code &lt;a href=&#34;https://hg.mozilla.org/mozilla-central/&#34;&gt;repository&lt;/a&gt; an example of a large-scale project that uses Mercurial for source and version control.&lt;/p&gt;
+&lt;p&gt;Using these tools, patches can be formatted and sent for review in the correct format to enable proper inclusion into the main codebase happends.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Code of Conduct&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;As the number of people contributing to open source projects grow,&lt;/p&gt;
+&lt;p&gt;As the number of people contributing to open source projects grow, certain behaviour is expected from contributors to maintain healthy annd civil communities. A code of conduct included in a project is used to describe the expected behaviour from the projects&amp;rsquo; contributors and participants. The code of conduct is usually enforced by project maintainers.&lt;/p&gt;
+&lt;p&gt;In 2014, the &lt;a href=&#34;https://www.contributor-covenant.org/&#34;&gt;Contributor Covenant&lt;/a&gt; was released by Coraline Ada Ehmke. Since then, the covenant has been adopted by numerous communities and was even created into a convenient &lt;a href=&#34;https://github.com/ContributorCovenant/contributor_covenant/blob/release/CODE_OF_CONDUCT.md&#34;&gt;template&lt;/a&gt; that can be easily included into new repositories.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Licenses&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Each open source project generally has a license included in the source code that explain the rights provided to the user for the software. There are a few popular open source licenses, but all open source licenses typically allow the software to be freely used, modified and shared.&lt;/p&gt;
+&lt;p&gt;Popular open source licenses include the GNU General Public License, &lt;a href=&#34;https://opensource.org/licenses/gpl-license&#34;&gt;version 2&lt;/a&gt; and &lt;a href=&#34;https://opensource.org/licenses/GPL-3.0&#34;&gt;version 3&lt;/a&gt; and the &lt;a href=&#34;https://opensource.org/licenses/MIT&#34;&gt;MIT&lt;/a&gt; license.&lt;br&gt;
+The Linux kernel, for example, is licenses under the GNU General Public License v2, with a copy of the licenses being available in every distribution of the source code.&lt;/p&gt;
+&lt;p&gt;To contribute in certain projects, contributors might also be required to sign a Contributor License Agreement (CLA) to give the project the ight to include your contribution to the project&amp;rsquo;s code. An example of a project that uses CLAs is React, which usually requires contributors to sign a CLA before their pull request can be accepted.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;Each open source community will usually have a unique structure depending on its size and function. Contributing to a specific project will often require the identification of how the specific community is managed and how to utilize the aspects described above to become a productive and valuable contributor.&lt;/p&gt;
 </description>
      </item>
    
