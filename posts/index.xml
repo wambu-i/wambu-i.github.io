@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
  <channel>
    <title>Posts on Wambui Karuga</title>
-   <link>https://karuga.xyz/posts/</link>
+   <link>https://www.karuga.org/posts/</link>
    <description>Recent content in Posts on Wambui Karuga</description>
    <generator>Hugo -- gohugo.io</generator>
    <language>en-us</language>
    <lastBuildDate>Sun, 19 Jul 2020 20:47:44 +0300</lastBuildDate>
    
-       <atom:link href="https://karuga.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
+       <atom:link href="https://www.karuga.org/posts/index.xml" rel="self" type="application/rss+xml" />
    
    
      <item>
        <title>An Overview of Open Source Communities</title>
-       <link>https://karuga.xyz/posts/opensource-overview/</link>
+       <link>https://www.karuga.org/posts/opensource-overview/</link>
        <pubDate>Sun, 19 Jul 2020 20:47:44 +0300</pubDate>
        
-       <guid>https://karuga.xyz/posts/opensource-overview/</guid>
+       <guid>https://www.karuga.org/posts/opensource-overview/</guid>
        <description>&lt;p&gt;Open source projects usually employ unique collaborative processes and methods to work on a shared codebase or project for team members or individual contributors to ensure cohesive project advancement. To achieve this, the open source community has identified key aspects of managing such communities that ensure proper collaboration.&lt;/p&gt;
 &lt;h2 id=&#34;management-of-open-source-communities&#34;&gt;Management of Open Source Communities&lt;/h2&gt;
 &lt;p&gt;Each open source project usually creates its own structure, with some common aspects:&lt;/p&gt;
@@ -62,10 +62,10 @@ The Linux kernel, for example, is licensed under the GNU General Public License 
    
      <item>
        <title>The Eudyptula Challenge: Task I</title>
-       <link>https://karuga.xyz/posts/eudyptula-i/</link>
+       <link>https://www.karuga.org/posts/eudyptula-i/</link>
        <pubDate>Tue, 21 Apr 2020 10:42:05 +0300</pubDate>
        
-       <guid>https://karuga.xyz/posts/eudyptula-i/</guid>
+       <guid>https://www.karuga.org/posts/eudyptula-i/</guid>
        <description>&lt;p&gt;After my initial post introducing the Eudyptula Challenge, this is the first post of my solutions to the challenge. As with every programming tutorial or book, the first task is writing a very simple “hello world” kernel module.&lt;/p&gt;
 &lt;p&gt;Here was the description of the first task in the challenge:&lt;/p&gt;
 &lt;ul&gt;
@@ -148,10 +148,10 @@ I’m looking forward to continuing with the challenge where I can build on top 
    
      <item>
        <title>The Eudyptula Challenge</title>
-       <link>https://karuga.xyz/posts/eudyptula-challenge/</link>
+       <link>https://www.karuga.org/posts/eudyptula-challenge/</link>
        <pubDate>Sat, 18 Apr 2020 10:39:42 +0300</pubDate>
        
-       <guid>https://karuga.xyz/posts/eudyptula-challenge/</guid>
+       <guid>https://www.karuga.org/posts/eudyptula-challenge/</guid>
        <description>&lt;p&gt;The Free and Open Source Software movement has existed since the 1980s with Richard Stallman being credited as the “father” of the free and open source movement. Throughout the years, FOSS has gained momentum and popularity in the technology world with many developers and advocates hailing it as the future standard of technology. However, there are also two different positions covered under the umbrella term “FOSS”:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Free software which gives the user the power/ability to run, change and distribute the software as they see fit. It should be noted here that “free” does not refer to the price of the software but rather the rights and liberties the user of the software has. This position is based on trying to protect and guarantee a user’s essential freedoms and liberties.&lt;/li&gt;
@@ -170,10 +170,10 @@ Linux Kernel Contributors&lt;/p&gt;
    
      <item>
        <title>Outreachy: Applying and Getting Accepted into the Programme.</title>
-       <link>https://karuga.xyz/posts/outreachy-1/</link>
+       <link>https://www.karuga.org/posts/outreachy-1/</link>
        <pubDate>Tue, 31 Dec 2019 10:20:50 +0300</pubDate>
        
-       <guid>https://karuga.xyz/posts/outreachy-1/</guid>
+       <guid>https://www.karuga.org/posts/outreachy-1/</guid>
        <description>&lt;p&gt;I found out about the Outreachy internship project in 2018 during my last year of school. I was interested in getting involved in contributing to the open source community and the Outreachy program kept popping up in guides on how beginners could get started in the open source world. Outreachy is an internship program that matches interns with Free and Open Source Software communities for a three month contribution period.&lt;/p&gt;
 &lt;p&gt;I didn&amp;rsquo;t get to apply for the program in 2018 - partly due to my school workload and partly because I was afraid of not passing through the application period. I had previously applied to and been rejected by Google Summer of Code, so I was sure that I&amp;rsquo;d be getting rejection again.&lt;/p&gt;
 &lt;p&gt;It wasn&amp;rsquo;t until late in 2019 when I revisited the idea of applying to Outreachy again. The December 2019 - March 2020 internship applications were open and at that point, I had been employed full time as a software engineer. Over the past year, I&amp;rsquo;d slowly started getting involved with the open source world by contributing to the Mozilla Foundation, both in code contributions and getting involved in their Internet Health initiatives.&lt;/p&gt;

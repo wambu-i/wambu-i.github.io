@@ -3,57 +3,47 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://karuga.xyz/posts/opensource-overview/</loc>
+    <loc>https://www.karuga.org/posts/opensource-overview/</loc>
     <lastmod>2020-07-19T20:47:44+03:00</lastmod>
   </url>
   
   <url>
-    <loc>https://karuga.xyz/categories/</loc>
+    <loc>https://www.karuga.org/categories/</loc>
     <lastmod>2020-07-19T20:47:44+03:00</lastmod>
   </url>
   
   <url>
-    <loc>https://karuga.xyz/categories/open-source/</loc>
+    <loc>https://www.karuga.org/categories/open-source/</loc>
     <lastmod>2020-07-19T20:47:44+03:00</lastmod>
   </url>
   
   <url>
-    <loc>https://karuga.xyz/posts/</loc>
+    <loc>https://www.karuga.org/posts/</loc>
     <lastmod>2020-07-19T20:47:44+03:00</lastmod>
   </url>
   
   <url>
-    <loc>https://karuga.xyz/</loc>
+    <loc>https://www.karuga.org/</loc>
     <lastmod>2020-07-19T20:47:44+03:00</lastmod>
   </url>
   
   <url>
-    <loc>https://karuga.xyz/categories/linux/</loc>
+    <loc>https://www.karuga.org/posts/eudyptula-i/</loc>
     <lastmod>2020-04-21T10:42:05+03:00</lastmod>
   </url>
   
   <url>
-    <loc>https://karuga.xyz/posts/eudyptula-i/</loc>
-    <lastmod>2020-04-21T10:42:05+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://karuga.xyz/posts/eudyptula-challenge/</loc>
+    <loc>https://www.karuga.org/posts/eudyptula-challenge/</loc>
     <lastmod>2020-04-18T10:39:42+03:00</lastmod>
   </url>
   
   <url>
-    <loc>https://karuga.xyz/categories/outreachy/</loc>
+    <loc>https://www.karuga.org/posts/outreachy-1/</loc>
     <lastmod>2019-12-31T10:20:50+03:00</lastmod>
   </url>
   
   <url>
-    <loc>https://karuga.xyz/posts/outreachy-1/</loc>
-    <lastmod>2019-12-31T10:20:50+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://karuga.xyz/tags/</loc>
+    <loc>https://www.karuga.org/tags/</loc>
   </url>
   
 </urlset>
