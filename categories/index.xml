@@ -12,6 +12,90 @@
    
    
      <item>
+       <title>Happy Hour Wednesdays: Arrays Part I</title>
+       <link>https://www.karuga.org/posts/happy-hour-i/</link>
+       <pubDate>Mon, 02 Nov 2020 09:07:47 +0300</pubDate>
+       
+       <guid>https://www.karuga.org/posts/happy-hour-i/</guid>
+       <description>&lt;p&gt;As a community, we participate in our &lt;strong&gt;#HappyHourWednesdays&lt;/strong&gt; to get better at our technical interviewing skills.&lt;br&gt;
+We do this by reviewing some of the most common data structures and algorithms and solving problems similar to those that are becoming increasingly  common during
+the interviewing process. For the past couple of weeks, we&amp;rsquo;ve been going through one of the simplest data structure - the Array. This post will go through the questions
+we&amp;rsquo;ve seen so far and offer explanations on the best solution to the challenges.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Two Sum&lt;/strong&gt;&lt;br&gt;
+This was our first Array challenge from &lt;a href=&#34;https://leetcode.com/problems/two-sum/&#34;&gt;LeetCode&lt;/a&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Given an array of integers nums and an integer target, return indices of
+the two numbers such that they add up to target.
+You may assume that each input would have exactly one solution, and you may
+not use the same element twice. You can return the answer in any order.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;With most array questions, there is usually a naive solution that includes looping through most elements once or twice. For this particular challenge, the brute force
+solution would be to iterate through each element to see if there&amp;rsquo;s another value in the array that equals to the target when subtracted from it. This, however, provides
+a solution with &lt;em&gt;O(n^2)&lt;/em&gt; time complexity which will make the solution inefficient as the imput array increases in size.&lt;/p&gt;
+&lt;p&gt;To improve our time complexity, we&amp;rsquo;ll need a more efficient solution. One way to improve our solution is to keep track of complements of seen items in a hashmap such that when the
+complement stored is found in the existing array, we can return the indices at once.
+This means that we&amp;rsquo;ll only iterate through the array once, with each iteration including a check in the hashmap to see if its complement has already been seen before and stored. This reduces our run time complexity to &lt;em&gt;O(n)&lt;/em&gt; as we&amp;rsquo;ll only iterate through the array once. Our space complexity, however, increases to &lt;em&gt;O(n)&lt;/em&gt; due to the introduction of the hashmap (since the hashmap would only be able to store at most &lt;em&gt;n&lt;/em&gt; items - the original size of the array).&lt;/p&gt;
+&lt;p&gt;This solution can be implemented as below in C++:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using namespace std;
+
+vector&amp;lt;int&amp;gt; twoSum(vector&amp;lt;int&amp;gt;&amp;amp; nums, int target) {
+        map&amp;lt;int, int&amp;gt; seen;
+        auto size = nums.size();
+        std::vector&amp;lt;int&amp;gt; result;
+        int sum;
+
+        for (auto i = 0; i &amp;lt; size; i++) {
+                sum = target - nums[i];
+                auto s = seen.find(sum);
+                if (s != seen.end()) {
+                        result.push_back(i);
+                        result.push_back(s-&amp;gt;second);
+                }
+                seen.emplace(nums[i], i);
+        }
+           
+    return result;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Best Time to Buy and Sell Stock&lt;/strong&gt;
+This challenge is also from &lt;a href=&#34;https://leetcode.com/problems/best-time-to-buy-and-sell-stock/&#34;&gt;LeetCode&lt;/a&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Say you have an array for which the ith element is the price of a given
+stock on day *i*. If you were only permitted to complete at most one
+transaction (i.e., buy one and sell one share of the stock), design an
+algorithm to find the maximum profit.
+Note that you cannot sell a stock before you buy one.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This challenge
+As with the previous challenge, this problem has a brute force solution that includes iterating over the items from one end twice (the inner loops starts from &lt;em&gt;i + 1&lt;/em&gt;) while
+keeping track of the maximum difference seen up to that point. Once both loops complete, the stored difference should be the maximum profit that can be achieved. This solution will have a time complexity of &lt;em&gt;O(n^2)&lt;/em&gt; as it has two loops iterating over the array.&lt;/p&gt;
+&lt;p&gt;To improve this solution, we&amp;rsquo;ll employ one loop that iterates over the array while keeping track of the largest differemce seen so far followed by the smallest price in the array. This enables us to see the largest deep as the loop progresses. At the end of the loop, the largest difference will be stored and returned.&lt;br&gt;
+This improves the run time complexity to &lt;em&gt;O(n)&lt;/em&gt; as only a single loop is needed for the array with a space complexity of &lt;em&gt;O(1)&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;This solution can be implemented as below in C++:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using namespace std;
+
+int maxProfit(vector&amp;lt;int&amp;gt;&amp;amp; prices) {
+        auto size = prices.size();
+        int min = INT_MAX;
+        int max = 0;
+           
+        for (auto i = 0; i &amp;lt; size; i++) {
+                if (prices[i] &amp;lt; min) {
+                        min = prices[i];
+                }
+                else if (prices[i] - min &amp;gt; max) {
+                        max = prices[i] - min;
+                }
+        }
+        return max;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;From these two examples, it&amp;rsquo;s clear that most array questions can be solved through brute force solutions which lead to pretty inefficient solutions. Improving on these solutions can lead to a more efficient solution in both space and time complexities.&lt;br&gt;
+As &lt;strong&gt;#HappyHourWednesday&lt;/strong&gt; continues, we hope that going over these challenges greatly improves our ability to come up with efficient solutions during interviews.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
        <title>An Overview of Open Source Communities</title>
        <link>https://www.karuga.org/posts/opensource-overview/</link>
        <pubDate>Sun, 19 Jul 2020 20:47:44 +0300</pubDate>
