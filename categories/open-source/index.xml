@@ -37,7 +37,6 @@ This challenge has a very simple solution using division - find the product of a
 &lt;p&gt;Another solution will be to find the product of all the elements before the given index and multiply it by the product of all the elements that occur after the given index.&lt;br&gt;
 This solution can be written as follows:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;using namespace std;
-public:
 vector&amp;lt;int&amp;gt; productExceptSelf(vector&amp;lt;int&amp;gt;&amp;amp; nums) {
     int size = nums.size();
     vector&amp;lt;int&amp;gt; left(size, 1);
