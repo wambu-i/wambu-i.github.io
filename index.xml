@@ -6,10 +6,111 @@
    <description>Recent content on Wambui Karuga</description>
    <generator>Hugo -- gohugo.io</generator>
    <language>en-us</language>
-   <lastBuildDate>Mon, 02 Nov 2020 09:07:47 +0300</lastBuildDate>
+   <lastBuildDate>Mon, 16 Nov 2020 09:47:30 +0300</lastBuildDate>
    
        <atom:link href="https://www.karuga.org/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Happy Hour Wednesdays: Arrays Part II</title>
+       <link>https://www.karuga.org/posts/happy-hour-ii/</link>
+       <pubDate>Mon, 16 Nov 2020 09:47:30 +0300</pubDate>
+       
+       <guid>https://www.karuga.org/posts/happy-hour-ii/</guid>
+       <description>&lt;p&gt;As with our &lt;a href=&#34;https://www.karuga.org/posts/happy-hour-i/&#34;&gt;first&lt;/a&gt; post, this post continues to review the recently concluded #HappyHourWednesdays interview questions of
+arrays.&lt;br&gt;
+The last two array questions are as follows:&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Product of Array Except Self&lt;/strong&gt;&lt;br&gt;
+This challenge from &lt;a href=&#34;https://leetcode.com/problems/product-of-array-except-self/&#34;&gt;LeetCode&lt;/a&gt; is as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Given an array nums of n integers where n &amp;gt; 1,  return an array output
+such that output[i] is equal to the product of all the elements of nums
+except nums[i].
+It&#39;s guaranteed that the product of the elements of any prefix or suffix
+of the array (including the whole array) fits in a 32 bit integer.
+Note: Please solve it without division and in O(n).
+Could you solve it with constant space complexity? (The output array does
+not count as extra space for the purpose of space complexity analysis.)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;``
+This challenge has a very simple solution using division - find the product of all the elements in the given array, then for each of the elements of the array, divide the product by &lt;code&gt;x&lt;/code&gt; to find the &lt;code&gt;product of array except self&lt;/code&gt;. However, the challenge explicitly forbids us from using division and therefore another approach is needed.&lt;/p&gt;
+&lt;p&gt;Another solution will be to find the product of all the elements before the given index and multiply it by the product of all the elements that occur after the given index.&lt;br&gt;
+This solution can be written as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using namespace std;
+public:
+vector&amp;lt;int&amp;gt; productExceptSelf(vector&amp;lt;int&amp;gt;&amp;amp; nums) {
+    int size = nums.size();
+    vector&amp;lt;int&amp;gt; left(size, 1);
+    vector&amp;lt;int&amp;gt; right(size, 1);
+    vector&amp;lt;int&amp;gt; result(size, 0);
+       
+    for (auto i = 1; i &amp;lt; size; i++) {
+        left[i] = left[i - 1] * nums[i - 1];
+    }
+       
+    for (auto i = size - 2; i &amp;gt;= 0; i--) {
+        right[i] = nums[i + 1] * right[i + 1];
+    }
+       
+    for (auto i = 0; i &amp;lt; size; i++) {
+        result[i] = left[i] * right[i];
+    }
+       
+    return result;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This solution iterates over the two parts of the array, and multiplies the results to produce the solution.&lt;br&gt;
+This algorithm runs in &lt;em&gt;O(n)&lt;/em&gt; time where n is the size of the input array and has &lt;em&gt;O(n)&lt;/em&gt; space complexity used by the three new arrays we&amp;rsquo;re using to keep track of the left, right and final elements.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Container with Most Water&lt;/strong&gt;&lt;br&gt;
+This challenge is also from &lt;a href=&#34;https://leetcode.com/problems/container-with-most-water/&#34;&gt;LeetCode&lt;/a&gt; and is as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Given n non-negative integers a1, a2, ..., an , where each represents a
+point at coordinate (i, ai). n vertical lines are drawn such that the two
+endpoints of the line i is at (i, ai) and (i, 0). Find two lines, which,
+together with the x-axis forms a container, such that the container
+contains the most water.
+Notice that you may not slant the container.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This challenge is looking for the maximum area that can be formed between the vertical lines using the shorter line as length and the distance between the lines as the
+width of the rectangle.
+As with most of the array questions, this challenge can be solved using &lt;strong&gt;brute force&lt;/strong&gt; by iterating over the areas of every possible pair of the lines and picking the maximum
+area out of those. However this is not the most efficient solution as it will produce an algorithm with a runtime of &lt;em&gt;(O^n2)&lt;/em&gt; which means that the solution will take longer for larger inputs.&lt;/p&gt;
+&lt;p&gt;To optimize the solution, we&amp;rsquo;ll consider that the area is always limited by the height of the shorter line as the maximum height the water can be at will always be the height of the shorter line. Further more, the area produced will increase as the lines grow farther from each other.&lt;br&gt;
+With this in mind, we can design a solution that works with this constraints using two pointers. One of these pointers will start at the beginning while the other one will start at the end of the array holding the lengths. These two pointers will then be used to iterate over the array as they start from different ends of the array. In each loop of the iteration, we&amp;rsquo;ll keep the maximum area found, updating it with the current area if it is larger than what was previously stored. At the end of each loop we&amp;rsquo;ll advance the pointer which points at the shorter line forward.&lt;br&gt;
+This solution can be written as follows in C++:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using namespace std;
+int maxArea(vector&amp;lt;int&amp;gt;&amp;amp; height) {
+    auto size = height.size();
+    int first = 0;
+    int last = size - 1;
+    int max = 0;
+    int curr;
+
+    while (first &amp;lt; last) {
+            curr = (last - first) * ((height[first] &amp;lt; height[last]) ? height[first] : height[last]);
+            max =  curr &amp;gt; max ? curr: max;
+            if (height[first] &amp;lt; height[last])
+                    first++;
+            else
+                    last--;
+    }
+
+    return max;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This produces an algorithm with a time complexity of &lt;em&gt;O(n)&lt;/em&gt; as it solves the challenge in a single pass with a space complexity of &lt;em&gt;O(1)&lt;/em&gt; as no extra space has been allocated.&lt;/p&gt;
+&lt;p&gt;With that, we come to the end of our array series.&lt;br&gt;
+Here are some things to keep in mind when solving for arrays:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;There is almost &lt;strong&gt;always a brute-force solution&lt;/strong&gt; to questions on arrays that includes iterating over the array/arrays. The most efficient solution is usually found by improving on this brute-force implementation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Know your array libraries!&lt;/strong&gt; Most programming languages have libraries that provide various array operations and algorithms. Being familiar with the library in your language of choice will often save you time from having to implement certain procedures from scratch.&lt;/li&gt;
+&lt;li&gt;Be comfortable with writing solutions to problems that involve &lt;strong&gt;subarrays&lt;/strong&gt;!&lt;/li&gt;
+&lt;li&gt;Some operations on arrays are expensive due to the inherent design of arrays, so always keep in mind how much time each operation might take especially for large inputs. For example, inserting an element from the beginning of an array is slower than inserting it from the end.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Always solve for when the array is empty first!&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That&amp;rsquo;s it for arrays, and happy coding!&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+     </item>
    
      <item>
        <title>Happy Hour Wednesdays: Arrays Part I</title>
@@ -58,7 +159,7 @@ vector&amp;lt;int&amp;gt; twoSum(vector&amp;lt;int&amp;gt;&amp;amp; nums, int ta
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Best Time to Buy and Sell Stock&lt;/strong&gt;
+&lt;p&gt;&lt;strong&gt;Best Time to Buy and Sell Stock&lt;/strong&gt;&lt;br&gt;
 This challenge is also from &lt;a href=&#34;https://leetcode.com/problems/best-time-to-buy-and-sell-stock/&#34;&gt;LeetCode&lt;/a&gt;:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;Say you have an array for which the ith element is the price of a given
 stock on day *i*. If you were only permitted to complete at most one

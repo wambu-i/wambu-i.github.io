@@ -1,0 +1,226 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Wambui Karuga</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="I write stuff about programming sometimes." />
+<meta name="author" content="Wambui Karuga" /><meta property="og:title" content="Happy Hour Wednesdays: Arrays Part II" />
+<meta property="og:description" content="As with our first post, this post continues to review the recently concluded #HappyHourWednesdays interview questions of arrays.
+The last two array questions are as follows:
+ Product of Array Except Self
+This challenge from LeetCode is as follows:
+Given an array nums of n integers where n &gt; 1, return an array output such that output[i] is equal to the product of all the elements of nums except nums[i]. It&#39;s guaranteed that the product of the elements of any prefix or suffix of the array (including the whole array) fits in a 32 bit integer." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.karuga.org/posts/happy-hour-ii/" />
+<meta property="article:published_time" content="2020-11-16T09:47:30+03:00" />
+<meta property="article:modified_time" content="2020-11-16T09:47:30+03:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Happy Hour Wednesdays: Arrays Part II"/>
+<meta name="twitter:description" content="As with our first post, this post continues to review the recently concluded #HappyHourWednesdays interview questions of arrays.
+The last two array questions are as follows:
+ Product of Array Except Self
+This challenge from LeetCode is as follows:
+Given an array nums of n integers where n &gt; 1, return an array output such that output[i] is equal to the product of all the elements of nums except nums[i]. It&#39;s guaranteed that the product of the elements of any prefix or suffix of the array (including the whole array) fits in a 32 bit integer."/>
+
+<meta name="generator" content="Hugo 0.75.1" />
+    
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://www.karuga.org/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /><link rel='stylesheet' href='https://www.karuga.org/css/styles-dark.css'></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Wambui Karuga</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/wambu-i" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://twitter.com/namespacewambui" title="Twitter">
+               <i class="fab fa-twitter fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://linkedin.com/in/wambui-karuga" title="LinkedIn">
+               <i class="fab fa-linkedin fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Happy Hour Wednesdays: Arrays Part II</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2020-11-16T09:47:30&#43;03:00">Nov 16, 2020</time>
+        </li>
+        
+
+        
+
+        <li>5 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+
+
+    <p>As with our <a href="https://www.karuga.org/posts/happy-hour-i/">first</a> post, this post continues to review the recently concluded #HappyHourWednesdays interview questions of
+arrays.<br>
+The last two array questions are as follows:</p>
+<ol start="3">
+<li>
+<p><strong>Product of Array Except Self</strong><br>
+This challenge from <a href="https://leetcode.com/problems/product-of-array-except-self/">LeetCode</a> is as follows:</p>
+<pre><code>Given an array nums of n integers where n &gt; 1,  return an array output
+such that output[i] is equal to the product of all the elements of nums
+except nums[i].
+It's guaranteed that the product of the elements of any prefix or suffix
+of the array (including the whole array) fits in a 32 bit integer.
+Note: Please solve it without division and in O(n).
+Could you solve it with constant space complexity? (The output array does
+not count as extra space for the purpose of space complexity analysis.)
+</code></pre><p>``
+This challenge has a very simple solution using division - find the product of all the elements in the given array, then for each of the elements of the array, divide the product by <code>x</code> to find the <code>product of array except self</code>. However, the challenge explicitly forbids us from using division and therefore another approach is needed.</p>
+<p>Another solution will be to find the product of all the elements before the given index and multiply it by the product of all the elements that occur after the given index.<br>
+This solution can be written as follows:</p>
+<pre><code>using namespace std;
+public:
+vector&lt;int&gt; productExceptSelf(vector&lt;int&gt;&amp; nums) {
+    int size = nums.size();
+    vector&lt;int&gt; left(size, 1);
+    vector&lt;int&gt; right(size, 1);
+    vector&lt;int&gt; result(size, 0);
+       
+    for (auto i = 1; i &lt; size; i++) {
+        left[i] = left[i - 1] * nums[i - 1];
+    }
+       
+    for (auto i = size - 2; i &gt;= 0; i--) {
+        right[i] = nums[i + 1] * right[i + 1];
+    }
+       
+    for (auto i = 0; i &lt; size; i++) {
+        result[i] = left[i] * right[i];
+    }
+       
+    return result;
+}
+</code></pre><p>This solution iterates over the two parts of the array, and multiplies the results to produce the solution.<br>
+This algorithm runs in <em>O(n)</em> time where n is the size of the input array and has <em>O(n)</em> space complexity used by the three new arrays we&rsquo;re using to keep track of the left, right and final elements.</p>
+</li>
+<li>
+<p><strong>Container with Most Water</strong><br>
+This challenge is also from <a href="https://leetcode.com/problems/container-with-most-water/">LeetCode</a> and is as follows:</p>
+<pre><code>Given n non-negative integers a1, a2, ..., an , where each represents a
+point at coordinate (i, ai). n vertical lines are drawn such that the two
+endpoints of the line i is at (i, ai) and (i, 0). Find two lines, which,
+together with the x-axis forms a container, such that the container
+contains the most water.
+Notice that you may not slant the container.
+</code></pre><p>This challenge is looking for the maximum area that can be formed between the vertical lines using the shorter line as length and the distance between the lines as the
+width of the rectangle.
+As with most of the array questions, this challenge can be solved using <strong>brute force</strong> by iterating over the areas of every possible pair of the lines and picking the maximum
+area out of those. However this is not the most efficient solution as it will produce an algorithm with a runtime of <em>(O^n2)</em> which means that the solution will take longer for larger inputs.</p>
+<p>To optimize the solution, we&rsquo;ll consider that the area is always limited by the height of the shorter line as the maximum height the water can be at will always be the height of the shorter line. Further more, the area produced will increase as the lines grow farther from each other.<br>
+With this in mind, we can design a solution that works with this constraints using two pointers. One of these pointers will start at the beginning while the other one will start at the end of the array holding the lengths. These two pointers will then be used to iterate over the array as they start from different ends of the array. In each loop of the iteration, we&rsquo;ll keep the maximum area found, updating it with the current area if it is larger than what was previously stored. At the end of each loop we&rsquo;ll advance the pointer which points at the shorter line forward.<br>
+This solution can be written as follows in C++:</p>
+<pre><code>using namespace std;
+int maxArea(vector&lt;int&gt;&amp; height) {
+    auto size = height.size();
+    int first = 0;
+    int last = size - 1;
+    int max = 0;
+    int curr;
+
+    while (first &lt; last) {
+            curr = (last - first) * ((height[first] &lt; height[last]) ? height[first] : height[last]);
+            max =  curr &gt; max ? curr: max;
+            if (height[first] &lt; height[last])
+                    first++;
+            else
+                    last--;
+    }
+
+    return max;
+}
+</code></pre><p>This produces an algorithm with a time complexity of <em>O(n)</em> as it solves the challenge in a single pass with a space complexity of <em>O(1)</em> as no extra space has been allocated.</p>
+<p>With that, we come to the end of our array series.<br>
+Here are some things to keep in mind when solving for arrays:</p>
+<ul>
+<li>There is almost <strong>always a brute-force solution</strong> to questions on arrays that includes iterating over the array/arrays. The most efficient solution is usually found by improving on this brute-force implementation.</li>
+<li><strong>Know your array libraries!</strong> Most programming languages have libraries that provide various array operations and algorithms. Being familiar with the library in your language of choice will often save you time from having to implement certain procedures from scratch.</li>
+<li>Be comfortable with writing solutions to problems that involve <strong>subarrays</strong>!</li>
+<li>Some operations on arrays are expensive due to the inherent design of arrays, so always keep in mind how much time each operation might take especially for large inputs. For example, inserting an element from the beginning of an array is slower than inserting it from the end.</li>
+<li><strong>Always solve for when the array is empty first!</strong></li>
+</ul>
+<p>That&rsquo;s it for arrays, and happy coding!</p>
+</li>
+</ol>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://www.karuga.org/posts/happy-hour-i/"><i class="fa fa-chevron-circle-left"></i> Happy Hour Wednesdays: Arrays Part I</a>
+        </li>
+        
+        
+    </ul>
+</section>
+  
+    
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h4>Wambui Karuga</h4>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>
+
