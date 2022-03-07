@@ -6,10 +6,75 @@
    <description>Recent content in Posts on Wambui Karuga</description>
    <generator>Hugo -- gohugo.io</generator>
    <language>en-us</language>
-   <lastBuildDate>Mon, 16 Nov 2020 09:47:30 +0300</lastBuildDate>
+   <lastBuildDate>Tue, 01 Mar 2022 22:16:27 +0300</lastBuildDate>
    
        <atom:link href="https://www.karuga.org/posts/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Generic Stacks in C</title>
+       <link>https://www.karuga.org/posts/generic-stack-in-c/</link>
+       <pubDate>Tue, 01 Mar 2022 22:16:27 +0300</pubDate>
+       
+       <guid>https://www.karuga.org/posts/generic-stack-in-c/</guid>
+       <description>&lt;p&gt;The C Programming Language has a reputation of being small but powerful. Unlike C++, which is usually considered its superset, C does not provide built-in types as
+rich as stacks, vectors, queues, or sets. The built-in &lt;code&gt;array&lt;/code&gt; type in C can however be extended to create custom data structures that emulate similar complex structures.&lt;/p&gt;
+&lt;p&gt;In this example, I&amp;rsquo;ll try to build a generic stack that can be used to hold different types of data when configured. In this example, I&amp;rsquo;ll build a generic stack using arrays,
+structs and unions that can hold an integer or double.&lt;br&gt;
+For starters, three structures are defined and declared as below:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;enum types&lt;/code&gt; which is a configuration value that defines the type of element that is being saved in the stack.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;union stacks&lt;/code&gt; - a union in C is a user-defined data type that can hold different types of variables in the same memory location. Unions can hold as many data types, but will only point to
+one of them at a specific time. In this example, &lt;code&gt;union data&lt;/code&gt; can hold &lt;code&gt;ints&lt;/code&gt;, &lt;code&gt;doubles&lt;/code&gt; and &lt;code&gt;strings (char **)&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;struct stack&lt;/code&gt; - this is the actual stack &lt;code&gt;struct&lt;/code&gt; data type. Its members include an index named &lt;code&gt;top&lt;/code&gt; that keeps track of the number of the top element in the stack, &lt;code&gt;type&lt;/code&gt; which is an enum of the type of stack it currently is, and the &lt;code&gt;struct element *stack&lt;/code&gt; which is a list of &lt;code&gt;elements&lt;/code&gt; which holds the actual data.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;typedef struct stack stack;
+typedef union stacks stacks;
+
+typedef enum stack_type {
+	INT,
+	STRING,
+	DOUBLE,
+} types;
+
+struct element {
+	union stacks {
+		int integer;
+		char string;
+		double double;
+	} data;
+};
+
+struct stack {
+	int top;
+	types type;
+	struct element *stack;
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;To create the stack, we use a call to &lt;code&gt;malloc&lt;/code&gt; to create a new stack element and then initialize its members:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;...
+stack *new = malloc(sizeof(*new));
+...
+new-&amp;gt;top = TOP;
+new-&amp;gt;type = type;
+new-&amp;gt;stack = malloc(sizeof(*new-&amp;gt;stack) * MAX_LEN);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;stack-&amp;gt;top&lt;/code&gt; is initialized to 0 to ensure that our new stack elements starts at index 0. &lt;code&gt;stack-&amp;gt;stack&lt;/code&gt; is created to be an array of &lt;code&gt;MAX_LEN&lt;/code&gt; length to hold our stack&amp;rsquo;s data.&lt;/p&gt;
+&lt;p&gt;The push operation (add element to stack) utilizes &lt;code&gt;stdarg.h&lt;/code&gt; which provides a number of macros for working with lists of unnamed arguments of unknown types and number. Using these macros,
+we can then manipulate the &lt;code&gt;data&lt;/code&gt; union in our stack to hold the type of data we&amp;rsquo;re currently working with.&lt;br&gt;
+In the push operation, we define a list of arguments &lt;code&gt;va_list args&lt;/code&gt; which will hold the list of arguments passed to the function. To initialized the list, the last argument to &lt;code&gt;va_start&lt;/code&gt; is the &lt;strong&gt;last named argument&lt;/strong&gt; in the function&amp;rsquo;s parameter list. This way, a call to &lt;code&gt;va_arg&lt;/code&gt; returns the &lt;em&gt;next&lt;/em&gt; argument passed to the function.
+For example in the following call:&lt;br&gt;
+&lt;code&gt;push(integer, ints[i])&lt;/code&gt;&lt;br&gt;
+the last named argument will be the stack &lt;code&gt;integer&lt;/code&gt; that holds integers and so the next call to &lt;code&gt;va_args()&lt;/code&gt; will yield the value of &lt;code&gt;ints[i]&lt;/code&gt;. We then cast this into the appropriate &lt;code&gt;int&lt;/code&gt; type and store it in its place on the stack. The &lt;code&gt;top&lt;/code&gt; variable is incremented for each element that is pushed on the stack.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;case INT:
+	stack-&amp;gt;stack[stack-&amp;gt;top++].data.integers = (int) va_arg(args, int);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For the pop operation (remove from stack and return), we utilized void pointers since they can be cast into any other pointer.&lt;br&gt;
+One of the arguments passed to the &lt;code&gt;pop&lt;/code&gt; function is a &lt;code&gt;void *element&lt;/code&gt; pointer that will hold the value of the popped element.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;case INT:
+	*((int *) element) = stack-&amp;gt;stack[--stack-&amp;gt;top].data.integers; 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We cast the void pointer to an int pointer, and then deference the obtained pointer and assigned to it to get the actual value of the element.&lt;br&gt;
+The &lt;code&gt;top&lt;/code&gt; variable is decremented each time a value is popped from the stack.&lt;/p&gt;
+&lt;p&gt;Using these functions, we can get a semi-workable generic stack in C that can be created to hold different types specified during creation.&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>Happy Hour Wednesdays: Arrays Part II</title>
@@ -24,10 +89,10 @@ The last two array questions are as follows:&lt;/p&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Product of Array Except Self&lt;/strong&gt;&lt;br&gt;
 This challenge from &lt;a href=&#34;https://leetcode.com/problems/product-of-array-except-self/&#34;&gt;LeetCode&lt;/a&gt; is as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Given an array nums of n integers where n &amp;gt; 1,  return an array output
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Given an array nums of n integers where n &amp;gt; 1,  return an array output
 such that output[i] is equal to the product of all the elements of nums
 except nums[i].
-It&#39;s guaranteed that the product of the elements of any prefix or suffix
+It&amp;#39;s guaranteed that the product of the elements of any prefix or suffix
 of the array (including the whole array) fits in a 32 bit integer.
 Note: Please solve it without division and in O(n).
 Could you solve it with constant space complexity? (The output array does
@@ -36,25 +101,25 @@ not count as extra space for the purpose of space complexity analysis.)
 This challenge has a very simple solution using division - find the product of all the elements in the given array, then for each of the elements of the array, divide the product by &lt;code&gt;x&lt;/code&gt; to find the &lt;code&gt;product of array except self&lt;/code&gt;. However, the challenge explicitly forbids us from using division and therefore another approach is needed.&lt;/p&gt;
 &lt;p&gt;Another solution will be to find the product of all the elements before the given index and multiply it by the product of all the elements that occur after the given index.&lt;br&gt;
 This solution can be written as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;using namespace std;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;using namespace std;
 vector&amp;lt;int&amp;gt; productExceptSelf(vector&amp;lt;int&amp;gt;&amp;amp; nums) {
     int size = nums.size();
     vector&amp;lt;int&amp;gt; left(size, 1);
     vector&amp;lt;int&amp;gt; right(size, 1);
     vector&amp;lt;int&amp;gt; result(size, 0);
-       
+
     for (auto i = 1; i &amp;lt; size; i++) {
         left[i] = left[i - 1] * nums[i - 1];
     }
-       
+
     for (auto i = size - 2; i &amp;gt;= 0; i--) {
         right[i] = nums[i + 1] * right[i + 1];
     }
-       
+
     for (auto i = 0; i &amp;lt; size; i++) {
         result[i] = left[i] * right[i];
     }
-       
+
     return result;
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This solution iterates over the two parts of the array, and multiplies the results to produce the solution.&lt;br&gt;
@@ -63,7 +128,7 @@ This algorithm runs in &lt;em&gt;O(n)&lt;/em&gt; time where n is the size of the
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Container with Most Water&lt;/strong&gt;&lt;br&gt;
 This challenge is also from &lt;a href=&#34;https://leetcode.com/problems/container-with-most-water/&#34;&gt;LeetCode&lt;/a&gt; and is as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Given n non-negative integers a1, a2, ..., an , where each represents a
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Given n non-negative integers a1, a2, ..., an , where each represents a
 point at coordinate (i, ai). n vertical lines are drawn such that the two
 endpoints of the line i is at (i, ai) and (i, 0). Find two lines, which,
 together with the x-axis forms a container, such that the container
@@ -76,7 +141,7 @@ area out of those. However this is not the most efficient solution as it will pr
 &lt;p&gt;To optimize the solution, we&amp;rsquo;ll consider that the area is always limited by the height of the shorter line as the maximum height the water can be at will always be the height of the shorter line. Further more, the area produced will increase as the lines grow farther from each other.&lt;br&gt;
 With this in mind, we can design a solution that works with this constraints using two pointers. One of these pointers will start at the beginning while the other one will start at the end of the array holding the lengths. These two pointers will then be used to iterate over the array as they start from different ends of the array. In each loop of the iteration, we&amp;rsquo;ll keep the maximum area found, updating it with the current area if it is larger than what was previously stored. At the end of each loop we&amp;rsquo;ll advance the pointer which points at the shorter line forward.&lt;br&gt;
 This solution can be written as follows in C++:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;using namespace std;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;using namespace std;
 int maxArea(vector&amp;lt;int&amp;gt;&amp;amp; height) {
     auto size = height.size();
     int first = 0;
@@ -125,7 +190,7 @@ we&amp;rsquo;ve seen so far and offer explanations on the best solution to the c
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Two Sum&lt;/strong&gt;&lt;br&gt;
 This was our first Array challenge from &lt;a href=&#34;https://leetcode.com/problems/two-sum/&#34;&gt;LeetCode&lt;/a&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Given an array of integers nums and an integer target, return indices of
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Given an array of integers nums and an integer target, return indices of
 the two numbers such that they add up to target.
 You may assume that each input would have exactly one solution, and you may
 not use the same element twice. You can return the answer in any order.
@@ -136,7 +201,7 @@ a solution with &lt;em&gt;O(n^2)&lt;/em&gt; time complexity which will make the 
 complement stored is found in the existing array, we can return the indices at once.
 This means that we&amp;rsquo;ll only iterate through the array once, with each iteration including a check in the hashmap to see if its complement has already been seen before and stored. This reduces our run time complexity to &lt;em&gt;O(n)&lt;/em&gt; as we&amp;rsquo;ll only iterate through the array once. Our space complexity, however, increases to &lt;em&gt;O(n)&lt;/em&gt; due to the introduction of the hashmap (since the hashmap would only be able to store at most &lt;em&gt;n&lt;/em&gt; items - the original size of the array).&lt;/p&gt;
 &lt;p&gt;This solution can be implemented as below in C++:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;using namespace std;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;using namespace std;
 
 vector&amp;lt;int&amp;gt; twoSum(vector&amp;lt;int&amp;gt;&amp;amp; nums, int target) {
         map&amp;lt;int, int&amp;gt; seen;
@@ -153,14 +218,14 @@ vector&amp;lt;int&amp;gt; twoSum(vector&amp;lt;int&amp;gt;&amp;amp; nums, int ta
                 }
                 seen.emplace(nums[i], i);
         }
-           
+
     return result;
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Best Time to Buy and Sell Stock&lt;/strong&gt;&lt;br&gt;
+&lt;p&gt;&lt;strong&gt;Best Time to Buy and Sell Stock&lt;/strong&gt;
 This challenge is also from &lt;a href=&#34;https://leetcode.com/problems/best-time-to-buy-and-sell-stock/&#34;&gt;LeetCode&lt;/a&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Say you have an array for which the ith element is the price of a given
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Say you have an array for which the ith element is the price of a given
 stock on day *i*. If you were only permitted to complete at most one
 transaction (i.e., buy one and sell one share of the stock), design an
 algorithm to find the maximum profit.
@@ -171,13 +236,13 @@ keeping track of the maximum difference seen up to that point. Once both loops c
 &lt;p&gt;To improve this solution, we&amp;rsquo;ll employ one loop that iterates over the array while keeping track of the largest differemce seen so far followed by the smallest price in the array. This enables us to see the largest deep as the loop progresses. At the end of the loop, the largest difference will be stored and returned.&lt;br&gt;
 This improves the run time complexity to &lt;em&gt;O(n)&lt;/em&gt; as only a single loop is needed for the array with a space complexity of &lt;em&gt;O(1)&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;This solution can be implemented as below in C++:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;using namespace std;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;using namespace std;
 
 int maxProfit(vector&amp;lt;int&amp;gt;&amp;amp; prices) {
         auto size = prices.size();
         int min = INT_MAX;
         int max = 0;
-           
+
         for (auto i = 0; i &amp;lt; size; i++) {
                 if (prices[i] &amp;lt; min) {
                         min = prices[i];
@@ -229,7 +294,7 @@ Git has become the defacto open source version control software in use, but &lt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Code of Conduct&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;As the number of people contributing to open source projects grow, certain behavior is expected from contributors to maintain healthy annd civil communities. A code of conduct included in a project is used to describe the expected behavior from the projects&#39; contributors and participants. The code of conduct is usually enforced by project maintainers.&lt;/p&gt;
+&lt;p&gt;As the number of people contributing to open source projects grow, certain behavior is expected from contributors to maintain healthy annd civil communities. A code of conduct included in a project is used to describe the expected behavior from the projects&amp;rsquo; contributors and participants. The code of conduct is usually enforced by project maintainers.&lt;/p&gt;
 &lt;p&gt;In 2014, the &lt;a href=&#34;https://www.contributor-covenant.org/&#34;&gt;Contributor Covenant&lt;/a&gt; was released by Coraline Ada Ehmke. Since then, the covenant has been adopted by numerous communities and was even created into a convenient &lt;a href=&#34;https://github.com/ContributorCovenant/contributor_covenant/blob/release/CODE_OF_CONDUCT.md&#34;&gt;template&lt;/a&gt; that can be easily included into new repositories.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;

@@ -1,0 +1,191 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Wambui Karuga</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="I write stuff about programming sometimes." />
+<meta name="author" content="Wambui Karuga" /><meta property="og:title" content="Generic Stacks in C" />
+<meta property="og:description" content="The C Programming Language has a reputation of being small but powerful. Unlike C&#43;&#43;, which is usually considered its superset, C does not provide built-in types as rich as stacks, vectors, queues, or sets. The built-in array type in C can however be extended to create custom data structures that emulate similar complex structures.
+In this example, I&rsquo;ll try to build a generic stack that can be used to hold different types of data when configured." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.karuga.org/posts/generic-stack-in-c/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-01T22:16:27+03:00" />
+<meta property="article:modified_time" content="2022-03-01T22:16:27+03:00" />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Generic Stacks in C"/>
+<meta name="twitter:description" content="The C Programming Language has a reputation of being small but powerful. Unlike C&#43;&#43;, which is usually considered its superset, C does not provide built-in types as rich as stacks, vectors, queues, or sets. The built-in array type in C can however be extended to create custom data structures that emulate similar complex structures.
+In this example, I&rsquo;ll try to build a generic stack that can be used to hold different types of data when configured."/>
+
+<meta name="generator" content="Hugo 0.93.2" />
+    
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://www.karuga.org/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /><link rel='stylesheet' href='https://www.karuga.org/css/styles-dark.css'></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Wambui Karuga</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/wambu-i" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://twitter.com/namespacewambui" title="Twitter">
+               <i class="fab fa-twitter fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://linkedin.com/in/wambui-karuga" title="LinkedIn">
+               <i class="fab fa-linkedin fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Generic Stacks in C</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2022-03-01T22:16:27&#43;03:00">Mar 1, 2022</time>
+        </li>
+        
+
+        
+
+        <li>4 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+<div class="featured_image">
+    <a href="https://www.karuga.org/posts/generic-stack-in-c/" title="Generic Stacks in C">
+        <img src="">
+    </a>
+</div>
+
+
+
+    <p>The C Programming Language has a reputation of being small but powerful. Unlike C++, which is usually considered its superset, C does not provide built-in types as
+rich as stacks, vectors, queues, or sets. The built-in <code>array</code> type in C can however be extended to create custom data structures that emulate similar complex structures.</p>
+<p>In this example, I&rsquo;ll try to build a generic stack that can be used to hold different types of data when configured. In this example, I&rsquo;ll build a generic stack using arrays,
+structs and unions that can hold an integer or double.<br>
+For starters, three structures are defined and declared as below:</p>
+<ul>
+<li><code>enum types</code> which is a configuration value that defines the type of element that is being saved in the stack.</li>
+<li><code>union stacks</code> - a union in C is a user-defined data type that can hold different types of variables in the same memory location. Unions can hold as many data types, but will only point to
+one of them at a specific time. In this example, <code>union data</code> can hold <code>ints</code>, <code>doubles</code> and <code>strings (char **)</code>.</li>
+<li><code>struct stack</code> - this is the actual stack <code>struct</code> data type. Its members include an index named <code>top</code> that keeps track of the number of the top element in the stack, <code>type</code> which is an enum of the type of stack it currently is, and the <code>struct element *stack</code> which is a list of <code>elements</code> which holds the actual data.</li>
+</ul>
+<pre tabindex="0"><code>typedef struct stack stack;
+typedef union stacks stacks;
+
+typedef enum stack_type {
+	INT,
+	STRING,
+	DOUBLE,
+} types;
+
+struct element {
+	union stacks {
+		int integer;
+		char string;
+		double double;
+	} data;
+};
+
+struct stack {
+	int top;
+	types type;
+	struct element *stack;
+};
+</code></pre><p>To create the stack, we use a call to <code>malloc</code> to create a new stack element and then initialize its members:</p>
+<pre tabindex="0"><code>...
+stack *new = malloc(sizeof(*new));
+...
+new-&gt;top = TOP;
+new-&gt;type = type;
+new-&gt;stack = malloc(sizeof(*new-&gt;stack) * MAX_LEN);
+</code></pre><p><code>stack-&gt;top</code> is initialized to 0 to ensure that our new stack elements starts at index 0. <code>stack-&gt;stack</code> is created to be an array of <code>MAX_LEN</code> length to hold our stack&rsquo;s data.</p>
+<p>The push operation (add element to stack) utilizes <code>stdarg.h</code> which provides a number of macros for working with lists of unnamed arguments of unknown types and number. Using these macros,
+we can then manipulate the <code>data</code> union in our stack to hold the type of data we&rsquo;re currently working with.<br>
+In the push operation, we define a list of arguments <code>va_list args</code> which will hold the list of arguments passed to the function. To initialized the list, the last argument to <code>va_start</code> is the <strong>last named argument</strong> in the function&rsquo;s parameter list. This way, a call to <code>va_arg</code> returns the <em>next</em> argument passed to the function.
+For example in the following call:<br>
+<code>push(integer, ints[i])</code><br>
+the last named argument will be the stack <code>integer</code> that holds integers and so the next call to <code>va_args()</code> will yield the value of <code>ints[i]</code>. We then cast this into the appropriate <code>int</code> type and store it in its place on the stack. The <code>top</code> variable is incremented for each element that is pushed on the stack.</p>
+<pre tabindex="0"><code>case INT:
+	stack-&gt;stack[stack-&gt;top++].data.integers = (int) va_arg(args, int);
+</code></pre><p>For the pop operation (remove from stack and return), we utilized void pointers since they can be cast into any other pointer.<br>
+One of the arguments passed to the <code>pop</code> function is a <code>void *element</code> pointer that will hold the value of the popped element.</p>
+<pre tabindex="0"><code>case INT:
+	*((int *) element) = stack-&gt;stack[--stack-&gt;top].data.integers; 
+</code></pre><p>We cast the void pointer to an int pointer, and then deference the obtained pointer and assigned to it to get the actual value of the element.<br>
+The <code>top</code> variable is decremented each time a value is popped from the stack.</p>
+<p>Using these functions, we can get a semi-workable generic stack in C that can be created to hold different types specified during creation.</p>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://www.karuga.org/posts/happy-hour-ii/"><i class="fa fa-chevron-circle-left"></i> Happy Hour Wednesdays: Arrays Part II</a>
+        </li>
+        
+        
+    </ul>
+</section>
+  
+    
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h4>Wambui Karuga</h4>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>
+

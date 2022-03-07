@@ -11,16 +11,17 @@
 <meta property="og:description" content="As a community, we participate in our #HappyHourWednesdays to get better at our technical interviewing skills.
 We do this by reviewing some of the most common data structures and algorithms and solving problems similar to those that are becoming increasingly common during the interviewing process. For the past couple of weeks, we&rsquo;ve been going through one of the simplest data structure - the Array. This post will go through the questions we&rsquo;ve seen so far and offer explanations on the best solution to the challenges." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.karuga.org/posts/happy-hour-i/" />
+<meta property="og:url" content="https://www.karuga.org/posts/happy-hour-i/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-11-02T09:07:47+03:00" />
 <meta property="article:modified_time" content="2020-11-02T09:07:47+03:00" />
+
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Happy Hour Wednesdays: Arrays Part I"/>
 <meta name="twitter:description" content="As a community, we participate in our #HappyHourWednesdays to get better at our technical interviewing skills.
 We do this by reviewing some of the most common data structures and algorithms and solving problems similar to those that are becoming increasingly common during the interviewing process. For the past couple of weeks, we&rsquo;ve been going through one of the simplest data structure - the Array. This post will go through the questions we&rsquo;ve seen so far and offer explanations on the best solution to the challenges."/>
 
-<meta name="generator" content="Hugo 0.75.1" />
+<meta name="generator" content="Hugo 0.93.2" />
     
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
@@ -99,7 +100,7 @@ we&rsquo;ve seen so far and offer explanations on the best solution to the chall
 <li>
 <p><strong>Two Sum</strong><br>
 This was our first Array challenge from <a href="https://leetcode.com/problems/two-sum/">LeetCode</a>:</p>
-<pre><code>Given an array of integers nums and an integer target, return indices of
+<pre tabindex="0"><code>Given an array of integers nums and an integer target, return indices of
 the two numbers such that they add up to target.
 You may assume that each input would have exactly one solution, and you may
 not use the same element twice. You can return the answer in any order.
@@ -110,7 +111,7 @@ a solution with <em>O(n^2)</em> time complexity which will make the solution ine
 complement stored is found in the existing array, we can return the indices at once.
 This means that we&rsquo;ll only iterate through the array once, with each iteration including a check in the hashmap to see if its complement has already been seen before and stored. This reduces our run time complexity to <em>O(n)</em> as we&rsquo;ll only iterate through the array once. Our space complexity, however, increases to <em>O(n)</em> due to the introduction of the hashmap (since the hashmap would only be able to store at most <em>n</em> items - the original size of the array).</p>
 <p>This solution can be implemented as below in C++:</p>
-<pre><code>using namespace std;
+<pre tabindex="0"><code>using namespace std;
 
 vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
         map&lt;int, int&gt; seen;
@@ -127,14 +128,14 @@ vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
                 }
                 seen.emplace(nums[i], i);
         }
-           
+
     return result;
 }
 </code></pre></li>
 <li>
-<p><strong>Best Time to Buy and Sell Stock</strong><br>
+<p><strong>Best Time to Buy and Sell Stock</strong>
 This challenge is also from <a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock/">LeetCode</a>:</p>
-<pre><code>Say you have an array for which the ith element is the price of a given
+<pre tabindex="0"><code>Say you have an array for which the ith element is the price of a given
 stock on day *i*. If you were only permitted to complete at most one
 transaction (i.e., buy one and sell one share of the stock), design an
 algorithm to find the maximum profit.
@@ -145,13 +146,13 @@ keeping track of the maximum difference seen up to that point. Once both loops c
 <p>To improve this solution, we&rsquo;ll employ one loop that iterates over the array while keeping track of the largest differemce seen so far followed by the smallest price in the array. This enables us to see the largest deep as the loop progresses. At the end of the loop, the largest difference will be stored and returned.<br>
 This improves the run time complexity to <em>O(n)</em> as only a single loop is needed for the array with a space complexity of <em>O(1)</em>.</p>
 <p>This solution can be implemented as below in C++:</p>
-<pre><code>using namespace std;
+<pre tabindex="0"><code>using namespace std;
 
 int maxProfit(vector&lt;int&gt;&amp; prices) {
         auto size = prices.size();
         int min = INT_MAX;
         int max = 0;
-           
+
         for (auto i = 0; i &lt; size; i++) {
                 if (prices[i] &lt; min) {
                         min = prices[i];
